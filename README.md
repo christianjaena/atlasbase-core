@@ -10,4 +10,4 @@ Core Backend Platform of Project Atlas
 Upon application startup, tables will be created based on `rollout` folder and can be manually rolled-back under `rollback` folder.
 
 To manually update: `mvn liquibase:update`
-To manually rollback: `mvn liquibase:rollback -`
+To manually rollback: `mvn liquibase:rollback -Dliquibase.rollbackCount=<number of count>`
