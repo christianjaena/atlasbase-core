@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      author: ChristianJaena
+      id: 1.0.0
+      tagDatabase:
+        tag: 1.0
+  - changeSet:
+      author: ChristianJaena
+      id: 1.0.1
+      rollback:
+        sqlFile:
+          dbms: postgresql
+          path: db/changelog/rollback/U1.0.1_initial_tables.sql
+      sqlFile:
+        dbms: postgresql
+        path: db/changelog/rollout/V1.0.1_initial_tables.sql
