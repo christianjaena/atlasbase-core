@@ -26,7 +26,9 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
-                        authorize.anyRequest().authenticated())
+                        authorize
+                                .requestMatchers("/v1/users/sign-in").permitAll()
+                                .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
 
