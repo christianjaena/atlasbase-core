@@ -2,8 +2,7 @@ package com.atlasbase.atlasbase_core.infrastructure.persistence.jpa.user;
 
 import com.atlasbase.atlasbase_core.domain.common.Metadata;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -11,6 +10,9 @@ import java.util.UUID;
 @Table(name = "users")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
 
     @Id
