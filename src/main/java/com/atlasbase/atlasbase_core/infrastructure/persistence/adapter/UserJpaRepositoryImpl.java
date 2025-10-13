@@ -5,11 +5,9 @@ import com.atlasbase.atlasbase_core.domain.repository.UserRepository;
 import com.atlasbase.atlasbase_core.infrastructure.persistence.jpa.UserJpaRepository;
 import com.atlasbase.atlasbase_core.infrastructure.persistence.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 @RequiredArgsConstructor
 public class UserJpaRepositoryImpl implements UserRepository {
 
