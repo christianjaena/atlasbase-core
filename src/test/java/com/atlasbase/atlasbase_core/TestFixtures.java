@@ -1,7 +1,7 @@
 package com.atlasbase.atlasbase_core;
 
-import com.atlasbase.atlasbase_core.domain.common.Metadata;
-import com.atlasbase.atlasbase_core.domain.user.model.User;
+import com.atlasbase.atlasbase_core.domain.model.Metadata;
+import com.atlasbase.atlasbase_core.domain.model.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

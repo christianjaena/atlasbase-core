@@ -1,9 +1,10 @@
-package com.atlasbase.atlasbase_core.interfaces.web.controller;
+package com.atlasbase.atlasbase_core.interfaces.rest.controller;
 
 import com.atlasbase.atlasbase_core.TestFixtures;
 import com.atlasbase.atlasbase_core.application.service.CustomUserDetailsService;
-import com.atlasbase.atlasbase_core.domain.user.model.User;
-import com.atlasbase.atlasbase_core.infrastructure.config.SecurityConfig;
+import com.atlasbase.atlasbase_core.domain.model.User;
+import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
+import com.atlasbase.atlasbase_core.interfaces.rest.controller.UserController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-@Import(SecurityConfig.class)
+@Import(SecurityConfiguration.class)
 class UserControllerTest {
 
     @Autowired

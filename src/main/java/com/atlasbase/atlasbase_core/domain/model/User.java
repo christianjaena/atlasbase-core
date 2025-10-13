@@ -1,7 +1,5 @@
-package com.atlasbase.atlasbase_core.domain.user.model;
+package com.atlasbase.atlasbase_core.domain.model;
 
-
-import com.atlasbase.atlasbase_core.domain.common.Metadata;
 
 import java.util.UUID;
 
@@ -13,6 +11,18 @@ public class User {
     private String userName;
     private String password;
     private Metadata metadata;
+
+    public User() { }
+
+    public User(UUID id, String firstName, String lastName, String email, String userName, String password, Metadata metadata) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.userName = userName;
+        this.password = password;
+        this.metadata = metadata;
+    }
 
     public UUID getId() {
         return id;

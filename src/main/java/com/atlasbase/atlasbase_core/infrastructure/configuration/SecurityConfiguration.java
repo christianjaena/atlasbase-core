@@ -1,6 +1,7 @@
-package com.atlasbase.atlasbase_core.infrastructure.config;
+package com.atlasbase.atlasbase_core.infrastructure.configuration;
 
 import com.atlasbase.atlasbase_core.application.service.CustomUserDetailsService;
+import com.atlasbase.atlasbase_core.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
-@RequiredArgsConstructor
-public class SecurityConfig {
-
-    private final CustomUserDetailsService customUserDetailsService;
+public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -32,7 +30,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http,
+                                                       CustomUserDetailsService customUserDetailsService) throws Exception {
         AuthenticationManagerBuilder authBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
 

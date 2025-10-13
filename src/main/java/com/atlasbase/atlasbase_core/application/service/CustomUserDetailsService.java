@@ -1,9 +1,8 @@
 package com.atlasbase.atlasbase_core.application.service;
 
-import com.atlasbase.atlasbase_core.infrastructure.persistence.jpa.user.UserEntity;
-import com.atlasbase.atlasbase_core.infrastructure.persistence.jpa.user.UserJpaRepository;
+import com.atlasbase.atlasbase_core.domain.model.User;
+import com.atlasbase.atlasbase_core.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,15 +12,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserJpaRepository userJpaRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userJpaRepository.findByUserName(username)
+        User user = userRepository.findByUserName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return User.withUsername(userEntity.getUserName())
-                .password(userEntity.getPassword())
+        return org.springframework.security.core.userdetails.User.withUsername(user.getUserName())
+                .password(user.getPassword())
                 .build();
     }
 }

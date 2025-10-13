@@ -1,6 +1,6 @@
-package com.atlasbase.atlasbase_core.interfaces.web.controller;
+package com.atlasbase.atlasbase_core.interfaces.rest.controller;
 
-import com.atlasbase.atlasbase_core.interfaces.web.dto.SignInRequest;
+import com.atlasbase.atlasbase_core.interfaces.rest.dto.SignInRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

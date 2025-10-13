@@ -1,5 +1,6 @@
-package com.atlasbase.atlasbase_core.infrastructure.persistence.jpa.user;
+package com.atlasbase.atlasbase_core.infrastructure.persistence.jpa;
 
+import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,6 @@ class UserJpaRepositoryTest {
 
     @BeforeEach
     void setup() {
-        // Clear DB on every test
         repository.deleteAll();
 
         UserEntity user = UserEntity.builder()
