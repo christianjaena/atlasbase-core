@@ -1,3 +1,36 @@
 spring:
   application:
     name: altasbase-core
+
+  devtools:
+    restart:
+      enabled: false
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  security:
+      user:
+        name: actuator
+        password: actuator
+        roles: ACTUATOR
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+      base-path: /actuator
+
+  endpoint:
+    health:
+      show-details: always # 'when_authorized' for prod
+      probes:
+        enabled: true # for kubernetes liveness/readiness
+    prometheus:
+      enabled: true
+
+
+
+
