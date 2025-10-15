@@ -4,7 +4,6 @@ import com.atlasbase.atlasbase_core.TestFixtures;
 import com.atlasbase.atlasbase_core.application.service.CustomUserDetailsService;
 import com.atlasbase.atlasbase_core.domain.model.User;
 import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
-import com.atlasbase.atlasbase_core.interfaces.rest.controller.UserController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,15 +36,8 @@ class UserControllerTest {
     @MockitoBean
     private CustomUserDetailsService customUserDetailsService;
 
-    private User user;
-
-    @BeforeEach
-    void setup() {
-        user = TestFixtures.userMock();
-    }
-
     @Test
-    void givenWrongCredentials_whenLogIn_shouldReturnInvalidCredentials() throws Exception {
+    void givenWrongCredentials_whenSignIn_shouldReturnInvalidCredentials() throws Exception {
         when(authenticationManager.authenticate(any()))
                 .thenThrow(new BadCredentialsException("Invalid credentials"));
 
@@ -54,6 +48,36 @@ class UserControllerTest {
                                 """))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string("Invalid credentials"));
+    }
+
+    @Test
+    void givenCorrectCredentialsAndIsAuthenticatedTrue_whenSignIn_shouldReturnAuthenticated() throws Exception {
+        Authentication authentication = mock(Authentication.class);
+        when(authenticationManager.authenticate(any())).thenReturn(authentication);
+        when(authentication.isAuthenticated()).thenReturn(true);
+
+        mockMvc.perform(post("/v1/users/sign-in")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"email": "user@example.com", "password": "password"}
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Authenticated"));
+    }
+
+    @Test
+    void givenCorrectCredentialsAndIsAuthenticatedFalse_whenSignIn_shouldReturnUnauthenticated() throws Exception {
+        Authentication authentication = mock(Authentication.class);
+        when(authenticationManager.authenticate(any())).thenReturn(authentication);
+        when(authentication.isAuthenticated()).thenReturn(false);
+
+        mockMvc.perform(post("/v1/users/sign-in")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"email": "user@example.com", "password": "password"}
+                                """))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Unauthenticated"));
     }
 
 }

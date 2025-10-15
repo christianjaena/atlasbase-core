@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,15 +21,13 @@ public class UserController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<String> signIn(@RequestBody SignInRequest body) {
-        try {
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(body.email(), body.password());
+        Authentication authenticate = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(body.email(),
+                        body.password())
+        );
 
-            authenticationManager.authenticate(authenticationToken);
-
-            return ResponseEntity.ok("Login successful!");
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
+        return authenticate.isAuthenticated()
+                ? ResponseEntity.ok("Authenticated")
+                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthenticated");
     }
 }
