@@ -31,6 +31,15 @@ management:
     prometheus:
       enabled: true
 
+rest-client:
+  pool:
+    maxTotal: 150
+    defaultMaxPerRoute: 50
+  timeout:
+    connectTimeout: 2s
+    responseTimeout: 3s
+    connectionRequestTimeout: 1s
+
 
 
 
