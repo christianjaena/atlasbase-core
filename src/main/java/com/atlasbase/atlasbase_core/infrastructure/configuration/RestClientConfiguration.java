@@ -17,7 +17,7 @@ import org.springframework.web.client.RestClient;
 @Configuration
 @EnableConfigurationProperties(RestClientProperties.class)
 @AllArgsConstructor
-public class RestClientConfig {
+public class RestClientConfiguration {
 
     private RestClientProperties restClientProperties;
 

@@ -2,6 +2,7 @@ package com.atlasbase.atlasbase_core;
 
 import com.atlasbase.atlasbase_core.domain.model.Metadata;
 import com.atlasbase.atlasbase_core.domain.model.User;
+import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,24 @@ public class TestFixtures {
         metadata.setUpdatedBy("TEST");
 
         User user = new User();
+        user.setId(UUID.randomUUID());
+        user.setEmail("testuser@gmail.com");
+        user.setUserName("test-user");
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setMetadata(metadata);
+        user.setPassword("password");
+        return user;
+    }
+
+    public static UserEntity userEntityMock() {
+        Metadata metadata = new Metadata();
+        metadata.setCreateDate(Instant.now());
+        metadata.setUpdateDate(Instant.now());
+        metadata.setCreatedBy("TEST");
+        metadata.setUpdatedBy("TEST");
+
+        UserEntity user = new UserEntity();
         user.setId(UUID.randomUUID());
         user.setEmail("testuser@gmail.com");
         user.setUserName("test-user");

@@ -18,4 +18,9 @@ public class UserJpaRepositoryImpl implements UserRepository {
     public Optional<User> findByUserName(String userName) {
         return repository.findByUserName(userName).map(mapper::toDomain);
     }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return Optional.empty();
+    }
 }

@@ -1,24 +1,21 @@
 package com.atlasbase.atlasbase_core.interfaces.rest.controller;
 
-import com.atlasbase.atlasbase_core.TestFixtures;
-import com.atlasbase.atlasbase_core.application.service.CustomUserDetailsService;
-import com.atlasbase.atlasbase_core.domain.model.User;
+import com.atlasbase.atlasbase_core.application.UserProcessManager;
 import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
-import org.junit.jupiter.api.BeforeEach;
+import com.atlasbase.atlasbase_core.interfaces.rest.dto.UserRequest;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,53 +28,69 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private AuthenticationManager authenticationManager;
+    private UserProcessManager processManager;
 
-    @MockitoBean
-    private CustomUserDetailsService customUserDetailsService;
 
-    @Test
-    void givenWrongCredentials_whenSignIn_shouldReturnInvalidCredentials() throws Exception {
-        when(authenticationManager.authenticate(any()))
-                .thenThrow(new BadCredentialsException("Invalid credentials"));
+    @Nested
+    class SignIn {
 
-        mockMvc.perform(post("/v1/users/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {"email": "user@example.com", "password": "password"}
-                                """))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string("Invalid credentials"));
+        @Test
+        void givenWrongCredentials_whenSignIn_shouldReturnInvalidCredentials() throws Exception {
+            doThrow(new BadCredentialsException("Invalid credentials"))
+                    .when(processManager).manage(any(UserRequest.class), any(String.class));
+
+            mockMvc.perform(post("/v1/users/sign-in")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("""
+                                    {"email": "user@example.com", "password": "password"}
+                                    """))
+                    .andExpect(status().isUnauthorized())
+                    .andExpect(content().string("Invalid credentials"));
+        }
+
+        @Test
+        void givenCorrectCredentialsAndIsAuthenticatedTrue_whenSignIn_shouldReturnAuthenticated() throws Exception {
+            doNothing().when(processManager).manage(any(UserRequest.class), any(String.class));
+
+            mockMvc.perform(post("/v1/users/sign-in")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("""
+                                    {"email": "user@example.com", "password": "password"}
+                                    """))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("Authenticated"));
+        }
+
     }
 
-    @Test
-    void givenCorrectCredentialsAndIsAuthenticatedTrue_whenSignIn_shouldReturnAuthenticated() throws Exception {
-        Authentication authentication = mock(Authentication.class);
-        when(authenticationManager.authenticate(any())).thenReturn(authentication);
-        when(authentication.isAuthenticated()).thenReturn(true);
+    @Nested
+    class SignUp {
 
-        mockMvc.perform(post("/v1/users/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {"email": "user@example.com", "password": "password"}
-                                """))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Authenticated"));
+        @Test
+        void givenUserIsNotPresent_whenSignUp_shouldReturnCreated() throws Exception {
+
+            mockMvc.perform(
+                    post("/v1/users/sign-up")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("""
+                                    {"email": "user@example.com", "password": "password"}
+                                    """)
+                    )
+                    .andExpect(status().isCreated());
+
+        }
+
+        @Test
+        void givenUserIsPresent_whenSignUp_shouldReturnBadRequest() throws Exception {
+
+            mockMvc.perform(
+                            post("/v1/users/sign-up")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content("""
+                                    {"email": "user@example.com", "password": "password"}
+                                    """)
+                    )
+                    .andExpect(status().isBadRequest());
+        }
     }
-
-    @Test
-    void givenCorrectCredentialsAndIsAuthenticatedFalse_whenSignIn_shouldReturnUnauthenticated() throws Exception {
-        Authentication authentication = mock(Authentication.class);
-        when(authenticationManager.authenticate(any())).thenReturn(authentication);
-        when(authentication.isAuthenticated()).thenReturn(false);
-
-        mockMvc.perform(post("/v1/users/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {"email": "user@example.com", "password": "password"}
-                                """))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string("Unauthenticated"));
-    }
-
 }

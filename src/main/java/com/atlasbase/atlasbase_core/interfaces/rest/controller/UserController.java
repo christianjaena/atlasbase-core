@@ -1,6 +1,9 @@
 package com.atlasbase.atlasbase_core.interfaces.rest.controller;
 
-import com.atlasbase.atlasbase_core.interfaces.rest.dto.SignInRequest;
+import com.atlasbase.atlasbase_core.application.UserProcessManager;
+import com.atlasbase.atlasbase_core.application.constants.UserActions;
+import com.atlasbase.atlasbase_core.domain.model.User;
+import com.atlasbase.atlasbase_core.interfaces.rest.dto.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final AuthenticationManager authenticationManager;
+    private final UserProcessManager userProcessManager;
 
     @PostMapping("/sign-in")
-    public ResponseEntity<String> signIn(@RequestBody SignInRequest body) {
-        Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(body.email(),
-                        body.password())
-        );
+    public ResponseEntity<String> signIn(@RequestBody UserRequest body) {
+        userProcessManager.manage(body, UserActions.SIGN_IN);
+        return ResponseEntity.status(HttpStatus.OK).body("Authenticated");
+    }
 
-        return authenticate.isAuthenticated()
-                ? ResponseEntity.ok("Authenticated")
-                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthenticated");
+    @PostMapping("/sign-up")
+    public ResponseEntity<String> signUp(@RequestBody UserRequest body) {
+        userProcessManager.manage(body, UserActions.SIGN_UP);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
