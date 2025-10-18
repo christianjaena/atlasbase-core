@@ -1,6 +1,6 @@
 package com.atlasbase.atlasbase_core.infrastructure.persistence.mapper;
 
-import com.atlasbase.atlasbase_core.domain.model.User;
+import com.atlasbase.atlasbase_core.core.model.User;
 import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
 import org.junit.jupiter.api.Test;
 

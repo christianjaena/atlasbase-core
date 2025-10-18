@@ -1,4 +1,4 @@
-package com.atlasbase.atlasbase_core.domain.model;
+package com.atlasbase.atlasbase_core.core.model;
 
 import java.time.Instant;
 

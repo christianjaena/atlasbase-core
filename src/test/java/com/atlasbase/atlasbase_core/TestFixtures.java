@@ -1,7 +1,8 @@
 package com.atlasbase.atlasbase_core;
 
-import com.atlasbase.atlasbase_core.domain.model.Metadata;
-import com.atlasbase.atlasbase_core.domain.model.User;
+import com.atlasbase.atlasbase_core.application.dto.UserRequest;
+import com.atlasbase.atlasbase_core.core.model.Metadata;
+import com.atlasbase.atlasbase_core.core.model.User;
 import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,12 @@ import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestFixtures {
+
+    public static String USER_CONTROLLER_BASE_PATH = "/v1/users";
+
+    public static String jsonContent = """
+            {"email": "user@example.com", "password": "password"}
+            """;
 
     public static User userMock() {
         Metadata metadata = new Metadata();
@@ -47,4 +54,9 @@ public class TestFixtures {
         user.setPassword("password");
         return user;
     }
+
+    public static UserRequest userRequestMock() {
+        return new UserRequest("johndoe", "johndoe@gmail.com", "password");
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.atlasbase.atlasbase_core.application.processors;
 
 import com.atlasbase.atlasbase_core.application.interfaces.Processor;
-import com.atlasbase.atlasbase_core.interfaces.rest.dto.UserRequest;
+import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,8 +20,7 @@ public class UserSignInProcessor implements Processor<UserRequest> {
     @Override
     public void process(UserRequest request) {
         Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(),
-                        request.password())
+                new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
         if (!authenticate.isAuthenticated()) {

@@ -1,4 +1,4 @@
-package com.atlasbase.atlasbase_core.infrastructure.persistence.jpa;
+package com.atlasbase.atlasbase_core.infrastructure.persistence.repository;
 
 import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,7 @@
 package com.atlasbase.atlasbase_core.infrastructure.persistence.jpa;
 
 import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
+import com.atlasbase.atlasbase_core.infrastructure.persistence.repository.UserJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ class UserJpaRepositoryTest {
                 .userName("johndoe")
                 .email("johndoe@gmail.com")
                 .build();
+
         repository.save(user);
     }
 

@@ -1,7 +1,7 @@
 package com.atlasbase.atlasbase_core.application.service;
 
-import com.atlasbase.atlasbase_core.domain.model.User;
-import com.atlasbase.atlasbase_core.domain.repository.UserRepository;
+import com.atlasbase.atlasbase_core.core.model.User;
+import com.atlasbase.atlasbase_core.core.port.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -33,12 +33,12 @@ management:
 
 rest-client:
   pool:
-    maxTotal: 150
-    defaultMaxPerRoute: 50
+    max-total: 150
+    default-max-per-route: 50
   timeout:
-    connectTimeout: 2s
-    responseTimeout: 3s
-    connectionRequestTimeout: 1s
+    connect-timeout: 2s
+    response-timeout: 3s
+    connection-request-timeout: 1s
 
 
 

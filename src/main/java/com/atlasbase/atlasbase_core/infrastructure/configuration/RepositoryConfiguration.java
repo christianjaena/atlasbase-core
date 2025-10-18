@@ -1,8 +1,8 @@
 package com.atlasbase.atlasbase_core.infrastructure.configuration;
 
-import com.atlasbase.atlasbase_core.domain.repository.UserRepository;
-import com.atlasbase.atlasbase_core.infrastructure.persistence.adapter.UserJpaRepositoryImpl;
-import com.atlasbase.atlasbase_core.infrastructure.persistence.jpa.UserJpaRepository;
+import com.atlasbase.atlasbase_core.core.port.UserRepository;
+import com.atlasbase.atlasbase_core.infrastructure.persistence.repository.UserRepositoryJpaAdapter;
+import com.atlasbase.atlasbase_core.infrastructure.persistence.repository.UserJpaRepository;
 import com.atlasbase.atlasbase_core.infrastructure.persistence.mapper.UserMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class RepositoryConfiguration {
 
     @Bean
-    public UserRepository userRepository(UserJpaRepository repository) {
-        return new UserJpaRepositoryImpl(repository, new UserMapper());
+    public UserRepository userRepository(UserJpaRepository repository, UserMapper mapper) {
+        return new UserRepositoryJpaAdapter(repository, mapper);
     }
 }

@@ -1,6 +1,6 @@
 package com.atlasbase.atlasbase_core.infrastructure.persistence.entity;
 
-import com.atlasbase.atlasbase_core.domain.model.Metadata;
+import com.atlasbase.atlasbase_core.core.model.Metadata;
 import jakarta.persistence.*;
 import lombok.*;
 

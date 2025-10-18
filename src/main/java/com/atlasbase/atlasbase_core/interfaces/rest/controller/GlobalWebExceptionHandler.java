@@ -1,5 +1,7 @@
 package com.atlasbase.atlasbase_core.interfaces.rest.controller;
 
+import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
+import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,4 +15,15 @@ public class GlobalWebExceptionHandler {
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
+
+    @ExceptionHandler({UserNameExistsException.class, UserEmailExistsException.class})
+    public ResponseEntity<String> handleGenericException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGenericException(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
 }

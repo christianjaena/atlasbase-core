@@ -1,6 +1,6 @@
 package com.atlasbase.atlasbase_core.application.processors;
 
-import com.atlasbase.atlasbase_core.interfaces.rest.dto.UserRequest;
+import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

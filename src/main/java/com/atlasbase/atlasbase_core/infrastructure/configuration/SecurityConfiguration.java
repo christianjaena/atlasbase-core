@@ -1,8 +1,6 @@
 package com.atlasbase.atlasbase_core.infrastructure.configuration;
 
 import com.atlasbase.atlasbase_core.application.service.CustomUserDetailsService;
-import com.atlasbase.atlasbase_core.domain.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
