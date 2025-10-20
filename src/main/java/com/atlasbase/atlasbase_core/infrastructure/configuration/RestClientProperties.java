@@ -7,9 +7,9 @@ import java.time.Duration;
 @ConfigurationProperties(prefix = "rest-client")
 public record RestClientProperties(Pool pool, Timeout timeout) {
 
-    public record Pool(int maxTotal, int defaultMaxPerRoute) { }
+	public record Pool(int maxTotal, int defaultMaxPerRoute) {
+	}
 
-    public record Timeout(Duration connectTimeout,
-                          Duration responseTimeout,
-                          Duration connectionRequestTimeout) { }
+	public record Timeout(Duration connectTimeout, Duration responseTimeout, Duration connectionRequestTimeout) {
+	}
 }

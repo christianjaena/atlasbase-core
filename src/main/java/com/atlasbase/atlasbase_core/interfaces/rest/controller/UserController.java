@@ -15,25 +15,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/users")
 public class UserController {
 
-    private final UserProcessManager processManager;
-    private final UserValidator validator;
+	private final UserProcessManager processManager;
 
-    public UserController(UserProcessManager processManager, UserValidator validator) {
-        this.processManager = processManager;
-        this.validator = validator;
-    }
+	private final UserValidator validator;
 
-    @PostMapping("/sign-in")
-    public ResponseEntity<String> signIn(@RequestBody UserRequest body) {
-        validator.validate(body);
-        processManager.manage(body, UserAction.SIGN_IN);
-        return ResponseEntity.status(HttpStatus.OK).body("Authenticated");
-    }
+	public UserController(UserProcessManager processManager, UserValidator validator) {
+		this.processManager = processManager;
+		this.validator = validator;
+	}
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<String> signUp(@RequestBody UserRequest body) {
-        validator.validate(body);
-        processManager.manage(body, UserAction.SIGN_UP);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+	@PostMapping("/sign-in")
+	public ResponseEntity<String> signIn(@RequestBody UserRequest body) {
+		validator.validate(body);
+		processManager.manage(body, UserAction.SIGN_IN);
+		return ResponseEntity.status(HttpStatus.OK).body("Authenticated");
+	}
+
+	@PostMapping("/sign-up")
+	public ResponseEntity<String> signUp(@RequestBody UserRequest body) {
+		validator.validate(body);
+		processManager.manage(body, UserAction.SIGN_UP);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
 }

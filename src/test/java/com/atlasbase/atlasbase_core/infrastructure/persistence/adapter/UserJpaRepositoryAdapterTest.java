@@ -22,61 +22,57 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserJpaRepositoryAdapterTest {
 
-    @InjectMocks
-    private UserRepositoryJpaAdapter repository;
+	@InjectMocks
+	private UserRepositoryJpaAdapter repository;
 
-    @Mock
-    private UserJpaRepository userJpaRepository;
+	@Mock
+	private UserJpaRepository userJpaRepository;
 
-    @Mock
-    private UserMapper userMapper;
+	@Mock
+	private UserMapper userMapper;
 
-    @Test
-    void givenExistingUser_whenFindByUserName_thenReturnUser() {
-        UserEntity userEntityMock = TestFixtures.userEntityMock();
-        User userMock = TestFixtures.userMock();
+	@Test
+	void givenExistingUser_whenFindByUserName_thenReturnUser() {
+		UserEntity userEntityMock = TestFixtures.userEntityMock();
+		User userMock = TestFixtures.userMock();
 
-        when(userJpaRepository.findByUserName(any(String.class)))
-                .thenReturn(Optional.of(userEntityMock));
-        when(userMapper.toDomain(userEntityMock)).thenReturn(userMock);
+		when(userJpaRepository.findByUserName(any(String.class))).thenReturn(Optional.of(userEntityMock));
+		when(userMapper.toDomain(userEntityMock)).thenReturn(userMock);
 
-        Optional<User> user = repository.findByUserName("johndoe");
+		Optional<User> user = repository.findByUserName("johndoe");
 
-        assertEquals(user.get(), userMock);
-    }
+		assertEquals(user.get(), userMock);
+	}
 
-    @Test
-    void givenNonExistingUser_whenFindByUserName_thenReturnEmpty() {
-        when(userJpaRepository.findByUserName(any(String.class)))
-                .thenReturn(Optional.empty());
+	@Test
+	void givenNonExistingUser_whenFindByUserName_thenReturnEmpty() {
+		when(userJpaRepository.findByUserName(any(String.class))).thenReturn(Optional.empty());
 
-        Optional<User> user = repository.findByUserName("johndoe");
+		Optional<User> user = repository.findByUserName("johndoe");
 
-        assertTrue(user.isEmpty());
-    }
+		assertTrue(user.isEmpty());
+	}
 
-    @Test
-    void givenExistingUser_whenFindByEmail_thenReturnUser() {
-        UserEntity userEntityMock = TestFixtures.userEntityMock();
-        User userMock = TestFixtures.userMock();
+	@Test
+	void givenExistingUser_whenFindByEmail_thenReturnUser() {
+		UserEntity userEntityMock = TestFixtures.userEntityMock();
+		User userMock = TestFixtures.userMock();
 
-        when(userJpaRepository.findByEmail(any(String.class)))
-                .thenReturn(Optional.of(userEntityMock));
-        when(userMapper.toDomain(userEntityMock)).thenReturn(userMock);
+		when(userJpaRepository.findByEmail(any(String.class))).thenReturn(Optional.of(userEntityMock));
+		when(userMapper.toDomain(userEntityMock)).thenReturn(userMock);
 
-        Optional<User> user = repository.findByEmail("johndoe@gmail.com");
+		Optional<User> user = repository.findByEmail("johndoe@gmail.com");
 
-        assertEquals(user.get(), userMock);
-    }
+		assertEquals(user.get(), userMock);
+	}
 
-    @Test
-    void givenNonExistingUser_whenFindByEmail_thenReturnEmpty() {
-        when(userJpaRepository.findByEmail(any(String.class)))
-                .thenReturn(Optional.empty());
+	@Test
+	void givenNonExistingUser_whenFindByEmail_thenReturnEmpty() {
+		when(userJpaRepository.findByEmail(any(String.class))).thenReturn(Optional.empty());
 
-        Optional<User> user = repository.findByEmail("john@gmail.com");
+		Optional<User> user = repository.findByEmail("john@gmail.com");
 
-        assertTrue(user.isEmpty());
-    }
+		assertTrue(user.isEmpty());
+	}
 
 }

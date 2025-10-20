@@ -19,41 +19,37 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserSignInProcessorTest {
 
-    @InjectMocks
-    private UserSignInProcessor processor;
+	@InjectMocks
+	private UserSignInProcessor processor;
 
-    @Mock
-    private AuthenticationManager manager;
+	@Mock
+	private AuthenticationManager manager;
 
-    private UserRequest request;
+	private UserRequest request;
 
-    @BeforeEach
-    void setup() {
-        request = new UserRequest(
-                "johndoe",
-                "johndoe@gmail.com",
-                "password"
-        );
-    }
+	@BeforeEach
+	void setup() {
+		request = new UserRequest("johndoe", "johndoe@gmail.com", "password");
+	}
 
-    @Test
-    void givenUserIsFound_whenProcessed_thenDoNothing() {
-        isAuthenticated(true);
+	@Test
+	void givenUserIsFound_whenProcessed_thenDoNothing() {
+		isAuthenticated(true);
 
-        processor.process(request);
-    }
+		processor.process(request);
+	}
 
-    @Test
-    void givenUserIsNotFound_whenProcessed_thenThrowBadCredentialsException() {
-        isAuthenticated(false);
+	@Test
+	void givenUserIsNotFound_whenProcessed_thenThrowBadCredentialsException() {
+		isAuthenticated(false);
 
-        assertThrows(BadCredentialsException.class,
-                () -> processor.process(request));
-    }
+		assertThrows(BadCredentialsException.class, () -> processor.process(request));
+	}
 
-    private void isAuthenticated(boolean isAuthenticated) {
-        Authentication authentication = mock(Authentication.class);
-        when(manager.authenticate(any())).thenReturn(authentication);
-        when(authentication.isAuthenticated()).thenReturn(isAuthenticated);
-    }
+	private void isAuthenticated(boolean isAuthenticated) {
+		Authentication authentication = mock(Authentication.class);
+		when(manager.authenticate(any())).thenReturn(authentication);
+		when(authentication.isAuthenticated()).thenReturn(isAuthenticated);
+	}
+
 }

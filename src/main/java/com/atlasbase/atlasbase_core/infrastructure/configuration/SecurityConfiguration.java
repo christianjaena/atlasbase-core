@@ -16,33 +16,31 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v1/users/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
-                        .anyRequest().authenticated()
-                );
-        return httpSecurity.build();
-    }
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.csrf(AbstractHttpConfigurer::disable)
+			.authorizeHttpRequests(auth -> auth.requestMatchers("/v1/users/**")
+				.permitAll()
+				.requestMatchers("/actuator/**")
+				.permitAll()
+				.anyRequest()
+				.authenticated());
+		return httpSecurity.build();
+	}
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http,
-                                                       CustomUserDetailsService customUserDetailsService) throws Exception {
-        AuthenticationManagerBuilder authBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
+	@Bean
+	public AuthenticationManager authenticationManager(HttpSecurity http,
+			CustomUserDetailsService customUserDetailsService) throws Exception {
+		AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
 
-        authBuilder
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
+		authBuilder.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 
-        return authBuilder.build();
-    }
+		return authBuilder.build();
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 }

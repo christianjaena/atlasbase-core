@@ -30,85 +30,88 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityConfiguration.class)
 class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockitoBean
-    private UserProcessManager processManager;
+	@MockitoBean
+	private UserProcessManager processManager;
 
-    @MockitoBean
-    private UserValidator validator;
+	@MockitoBean
+	private UserValidator validator;
 
-    @MockitoBean
-    private AuthenticationManager manager;
+	@MockitoBean
+	private AuthenticationManager manager;
 
-    @Nested
-    class SignIn {
+	@Nested
+	class SignIn {
 
-        @Test
-        void givenWrongCredentials_whenSignIn_shouldReturnInvalidCredentials() throws Exception {
-            doThrow(new BadCredentialsException("Invalid credentials"))
-                    .when(processManager).manage(any(UserRequest.class),
-                            any(UserAction.class));
+		@Test
+		void givenWrongCredentials_whenSignIn_shouldReturnInvalidCredentials() throws Exception {
+			doThrow(new BadCredentialsException("Invalid credentials")).when(processManager)
+				.manage(any(UserRequest.class), any(UserAction.class));
 
-            mockMvc.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(TestFixtures.jsonContent))
-                    .andExpect(status().isUnauthorized())
-                    .andExpect(content().string("Invalid credentials"));
-        }
+			mockMvc
+				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestFixtures.jsonContent))
+				.andExpect(status().isUnauthorized())
+				.andExpect(content().string("Invalid credentials"));
+		}
 
-        @Test
-        void givenCorrectCredentialsAndIsAuthenticatedTrue_whenSignIn_shouldReturnAuthenticated() throws Exception {
-            doNothing().when(processManager).manage(any(UserRequest.class),
-                    any(UserAction.class));
+		@Test
+		void givenCorrectCredentialsAndIsAuthenticatedTrue_whenSignIn_shouldReturnAuthenticated() throws Exception {
+			doNothing().when(processManager).manage(any(UserRequest.class), any(UserAction.class));
 
-            mockMvc.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(TestFixtures.jsonContent))
-                    .andExpect(status().isOk())
-                    .andExpect(content().string("Authenticated"));
-        }
+			mockMvc
+				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestFixtures.jsonContent))
+				.andExpect(status().isOk())
+				.andExpect(content().string("Authenticated"));
+		}
 
-    }
+	}
 
-    @Nested
-    class SignUp {
+	@Nested
+	class SignUp {
 
-        @Test
-        void givenUserIsNotPresent_whenSignUp_shouldReturnCreated() throws Exception {
+		@Test
+		void givenUserIsNotPresent_whenSignUp_shouldReturnCreated() throws Exception {
 
-            mockMvc.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(TestFixtures.jsonContent))
-                    .andExpect(status().isCreated());
+			mockMvc
+				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestFixtures.jsonContent))
+				.andExpect(status().isCreated());
 
-        }
+		}
 
-        @Test
-        void givenUserNameIsPresent_whenSignUp_shouldReturnBadRequest() throws Exception {
-            doThrow(new UserNameExistsException("UserName already exists"))
-                    .when(processManager).manage(any(UserRequest.class),
-                            any(UserAction.class));
+		@Test
+		void givenUserNameIsPresent_whenSignUp_shouldReturnBadRequest() throws Exception {
+			doThrow(new UserNameExistsException("UserName already exists")).when(processManager)
+				.manage(any(UserRequest.class), any(UserAction.class));
 
-            mockMvc.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(TestFixtures.jsonContent))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().string("UserName already exists"));
-        }
+			mockMvc
+				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestFixtures.jsonContent))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("UserName already exists"));
+		}
 
-        @Test
-        void givenEmailIsPresent_whenSignUp_shouldReturnBadRequest() throws Exception {
-            doThrow(new UserEmailExistsException("Email already exists"))
-                    .when(processManager).manage(any(UserRequest.class),
-                            any(UserAction.class));
+		@Test
+		void givenEmailIsPresent_whenSignUp_shouldReturnBadRequest() throws Exception {
+			doThrow(new UserEmailExistsException("Email already exists")).when(processManager)
+				.manage(any(UserRequest.class), any(UserAction.class));
 
-            mockMvc.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(TestFixtures.jsonContent))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().string("Email already exists"));
-        }
-    }
+			mockMvc
+				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestFixtures.jsonContent))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("Email already exists"));
+		}
+
+	}
+
 }

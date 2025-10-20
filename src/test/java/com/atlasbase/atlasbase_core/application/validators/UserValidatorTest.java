@@ -18,91 +18,62 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserValidatorTest {
 
-    @InjectMocks
-    private UserValidator validator;
+	@InjectMocks
+	private UserValidator validator;
 
-    @Mock
-    private UserRepository repository;
+	@Mock
+	private UserRepository repository;
 
-    @Test
-    void whenEmailIsExisting_whenValidate_thenThrowException() {
-        UserRequest userRequest = new UserRequest(
-                null,
-                "email@gmail.com",
-                "password"
-        );
+	@Test
+	void whenEmailIsExisting_whenValidate_thenThrowException() {
+		UserRequest userRequest = new UserRequest(null, "email@gmail.com", "password");
 
-        when(repository.findByEmail(userRequest.email()))
-                .thenThrow(new UserEmailExistsException("Email already " +
-                        "exists"));
+		when(repository.findByEmail(userRequest.email()))
+			.thenThrow(new UserEmailExistsException("Email already " + "exists"));
 
-        assertThrows(UserEmailExistsException.class,
-                () -> validator.validate(userRequest));
+		assertThrows(UserEmailExistsException.class, () -> validator.validate(userRequest));
 
-        verify(repository).findByEmail(any(String.class));
-    }
+		verify(repository).findByEmail(any(String.class));
+	}
 
-    @Test
-    void whenUserNameIsExisting_whenValidate_thenThrowException() {
-        UserRequest userRequest = new UserRequest(
-                "johndoe",
-                null,
-                "password"
-        );
+	@Test
+	void whenUserNameIsExisting_whenValidate_thenThrowException() {
+		UserRequest userRequest = new UserRequest("johndoe", null, "password");
 
-        when(repository.findByUserName(userRequest.userName()))
-                .thenThrow(new UserNameExistsException("UserName already " +
-                        "exists"));
+		when(repository.findByUserName(userRequest.userName()))
+			.thenThrow(new UserNameExistsException("UserName already " + "exists"));
 
-        assertThrows(UserNameExistsException.class,
-                () -> validator.validate(userRequest));
+		assertThrows(UserNameExistsException.class, () -> validator.validate(userRequest));
 
-        verify(repository).findByUserName(any(String.class));
-    }
+		verify(repository).findByUserName(any(String.class));
+	}
 
-    @Test
-    void whenUserNameAndEmailIsNonExisting_whenValidate_thenDoNothing() {
-        UserRequest userRequest = new UserRequest(
-                "johndoe",
-                "email@gmail.com",
-                "password"
-        );
+	@Test
+	void whenUserNameAndEmailIsNonExisting_whenValidate_thenDoNothing() {
+		UserRequest userRequest = new UserRequest("johndoe", "email@gmail.com", "password");
 
-        validator.validate(userRequest);
+		validator.validate(userRequest);
 
-        verify(repository).findByUserName(any(String.class));
-        verify(repository).findByEmail(any(String.class));
-    }
+		verify(repository).findByUserName(any(String.class));
+		verify(repository).findByEmail(any(String.class));
+	}
 
-    @Test
-    void whenUserNameAndEmailIsNull_whenValidate_thenThrowException() {
-        UserRequest userRequest = new UserRequest(
-                null,
-                null,
-                null
-        );
+	@Test
+	void whenUserNameAndEmailIsNull_whenValidate_thenThrowException() {
+		UserRequest userRequest = new UserRequest(null, null, null);
 
-        assertThrows(UserRequestMalformedException.class,
-                () -> validator.validate(userRequest)
-        );
+		assertThrows(UserRequestMalformedException.class, () -> validator.validate(userRequest));
 
-        verifyNoInteractions(repository);
-    }
+		verifyNoInteractions(repository);
+	}
 
-    @Test
-    void whenPasswordIsNull_whenValidate_thenThrowException() {
-        UserRequest userRequest = new UserRequest(
-                "johndoe",
-                "email@gmail.com",
-                null
-        );
+	@Test
+	void whenPasswordIsNull_whenValidate_thenThrowException() {
+		UserRequest userRequest = new UserRequest("johndoe", "email@gmail.com", null);
 
-        assertThrows(UserRequestMalformedException.class,
-                () -> validator.validate(userRequest)
-        );
+		assertThrows(UserRequestMalformedException.class, () -> validator.validate(userRequest));
 
-        verifyNoInteractions(repository);
-    }
-
+		verifyNoInteractions(repository);
+	}
 
 }

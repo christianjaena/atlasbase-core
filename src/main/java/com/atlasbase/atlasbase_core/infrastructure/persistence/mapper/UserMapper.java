@@ -7,33 +7,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper implements Mapper<User, UserEntity> {
 
-    @Override
-    public UserEntity toEntity(User user) {
-        if (user == null) return null;
+	@Override
+	public UserEntity toEntity(User user) {
+		if (user == null)
+			return null;
 
-        return new UserEntity(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getUserName(),
-                user.getPassword(),
-                user.getMetadata()
-        );
-    }
+		return new UserEntity(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
+				user.getUserName(), user.getPassword(), user.getMetadata());
+	}
 
-    @Override
-    public User toDomain(UserEntity user) {
-        if (user == null) return null;
+	@Override
+	public User toDomain(UserEntity user) {
+		if (user == null)
+			return null;
 
-        return new User(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getUserName(),
-                user.getPassword(),
-                user.getMetadata()
-        );
-    }
+		return new User(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUserName(),
+				user.getPassword(), user.getMetadata());
+	}
+
 }

@@ -19,35 +19,32 @@ import org.springframework.web.client.RestClient;
 @AllArgsConstructor
 public class RestClientConfiguration {
 
-    private RestClientProperties restClientProperties;
+	private RestClientProperties restClientProperties;
 
-    @Bean
-    public RestClient restClient() {
-        ConnectionConfig connectionConfig = ConnectionConfig.custom()
-                .setConnectTimeout(Timeout.of(restClientProperties.timeout().connectTimeout()))
-                .setSocketTimeout(Timeout.of(restClientProperties.timeout().responseTimeout()))
-                .build();
+	@Bean
+	public RestClient restClient() {
+		ConnectionConfig connectionConfig = ConnectionConfig.custom()
+			.setConnectTimeout(Timeout.of(restClientProperties.timeout().connectTimeout()))
+			.setSocketTimeout(Timeout.of(restClientProperties.timeout().responseTimeout()))
+			.build();
 
-        PoolingHttpClientConnectionManager connectionManager =
-                PoolingHttpClientConnectionManagerBuilder.create()
-                        .setMaxConnTotal(restClientProperties.pool().maxTotal())
-                        .setDefaultConnectionConfig(connectionConfig)
-                        .setMaxConnPerRoute(restClientProperties.pool().defaultMaxPerRoute())
-                        .build();
+		PoolingHttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+			.setMaxConnTotal(restClientProperties.pool().maxTotal())
+			.setDefaultConnectionConfig(connectionConfig)
+			.setMaxConnPerRoute(restClientProperties.pool().defaultMaxPerRoute())
+			.build();
 
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(Timeout.of(restClientProperties.timeout().connectionRequestTimeout()))
-                .setResponseTimeout(Timeout.of(restClientProperties.timeout().responseTimeout()))
-                .build();
+		RequestConfig requestConfig = RequestConfig.custom()
+			.setConnectionRequestTimeout(Timeout.of(restClientProperties.timeout().connectionRequestTimeout()))
+			.setResponseTimeout(Timeout.of(restClientProperties.timeout().responseTimeout()))
+			.build();
 
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setConnectionManager(connectionManager)
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+		CloseableHttpClient httpClient = HttpClients.custom()
+			.setConnectionManager(connectionManager)
+			.setDefaultRequestConfig(requestConfig)
+			.build();
 
-        return RestClient.builder()
-                .requestFactory(new HttpComponentsClientHttpRequestFactory(httpClient))
-                .build();
-    }
+		return RestClient.builder().requestFactory(new HttpComponentsClientHttpRequestFactory(httpClient)).build();
+	}
 
 }

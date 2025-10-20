@@ -13,18 +13,15 @@ import java.util.Map;
 @Component
 public class UserProcessManager implements ProcessManager<UserRequest, UserAction> {
 
-    private final Map<UserAction, Processor<UserRequest>> processorMap;
+	private final Map<UserAction, Processor<UserRequest>> processorMap;
 
-    public UserProcessManager(UserSignInProcessor userSignInProcessor,
-                             UserSignUpProcessor userSignUpProcessor) {
-        this.processorMap = Map.of(
-                UserAction.SIGN_IN, userSignInProcessor,
-                UserAction.SIGN_UP, userSignUpProcessor
-        );
-    }
+	public UserProcessManager(UserSignInProcessor userSignInProcessor, UserSignUpProcessor userSignUpProcessor) {
+		this.processorMap = Map.of(UserAction.SIGN_IN, userSignInProcessor, UserAction.SIGN_UP, userSignUpProcessor);
+	}
 
-    @Override
-    public void manage(UserRequest payload, UserAction action) {
-        processorMap.get(action).process(payload);
-    }
+	@Override
+	public void manage(UserRequest payload, UserAction action) {
+		processorMap.get(action).process(payload);
+	}
+
 }

@@ -19,31 +19,30 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CustomUserDetailsServiceTest {
 
-    @Mock
-    private UserRepository repository;
+	@Mock
+	private UserRepository repository;
 
-    @InjectMocks
-    private CustomUserDetailsService service;
+	@InjectMocks
+	private CustomUserDetailsService service;
 
-    @Test
-    void givenExistingUser_whenLoadByUserName_returnUserDetails() {
-        User user = new User();
-        user.setUserName("johndoe");
-        user.setPassword("password");
-        user.setEmail("johndoe@gmail.com");
+	@Test
+	void givenExistingUser_whenLoadByUserName_returnUserDetails() {
+		User user = new User();
+		user.setUserName("johndoe");
+		user.setPassword("password");
+		user.setEmail("johndoe@gmail.com");
 
-        when(repository.findByUserName(any(String.class)))
-                .thenReturn(Optional.of(user));
+		when(repository.findByUserName(any(String.class))).thenReturn(Optional.of(user));
 
-        UserDetails userDetails = service.loadUserByUsername("johndoe");
+		UserDetails userDetails = service.loadUserByUsername("johndoe");
 
-        assertNotNull(userDetails);
-        assertEquals("johndoe", userDetails.getUsername());
-    }
+		assertNotNull(userDetails);
+		assertEquals("johndoe", userDetails.getUsername());
+	}
 
-    @Test
-    void givenNonExistingUser_whenLoadByUserName_throwUsernameNotFoundException() {
-        assertThrows(UsernameNotFoundException.class,
-                () -> service.loadUserByUsername("nonexistinguser"));
-    }
+	@Test
+	void givenNonExistingUser_whenLoadByUserName_throwUsernameNotFoundException() {
+		assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername("nonexistinguser"));
+	}
+
 }

@@ -3,40 +3,45 @@ package com.atlasbase.atlasbase_core.core.model;
 import java.time.Instant;
 
 public class Metadata {
-    private Instant createDate;
-    private Instant updateDate;
-    private String createdBy;
-    private String updatedBy;
 
-    public Instant getCreateDate() {
-        return createDate;
-    }
+	private Instant createDate;
 
-    public void setCreateDate(Instant createDate) {
-        this.createDate = createDate;
-    }
+	private Instant updateDate;
 
-    public Instant getUpdateDate() {
-        return updateDate;
-    }
+	private String createdBy;
 
-    public void setUpdateDate(Instant updateDate) {
-        this.updateDate = updateDate;
-    }
+	private String updatedBy;
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+	public Instant getCreateDate() {
+		return createDate;
+	}
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+	public void setCreateDate(Instant createDate) {
+		this.createDate = createDate;
+	}
 
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
+	public Instant getUpdateDate() {
+		return updateDate;
+	}
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
+	public void setUpdateDate(Instant updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
 }

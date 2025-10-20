@@ -1,82 +1,91 @@
 package com.atlasbase.atlasbase_core.core.model;
 
-
 import java.util.UUID;
 
 public class User {
-    private UUID id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String userName;
-    private String password;
-    private Metadata metadata;
 
-    public User() { }
+	private UUID id;
 
-    public User(UUID id, String firstName, String lastName, String email, String userName, String password, Metadata metadata) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.userName = userName;
-        this.password = password;
-        this.metadata = metadata;
-    }
+	private String firstName;
 
-    public UUID getId() {
-        return id;
-    }
+	private String lastName;
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+	private String email;
 
-    public String getFirstName() {
-        return firstName;
-    }
+	private String userName;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	private String password;
 
-    public String getLastName() {
-        return lastName;
-    }
+	private Metadata metadata;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public User() {
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public User(UUID id, String firstName, String lastName, String email, String userName, String password,
+			Metadata metadata) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+		this.metadata = metadata;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public UUID getId() {
+		return id;
+	}
 
-    public String getUserName() {
-        return userName;
-    }
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public Metadata getMetadata() {
-        return metadata;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setMetadata(Metadata metadata) {
-        this.metadata = metadata;
-    }
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Metadata getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
+	}
+
 }

@@ -11,20 +11,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserSignInProcessor implements Processor<UserRequest> {
 
-    private final AuthenticationManager authenticationManager;
+	private final AuthenticationManager authenticationManager;
 
-    public UserSignInProcessor(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
+	public UserSignInProcessor(AuthenticationManager authenticationManager) {
+		this.authenticationManager = authenticationManager;
+	}
 
-    @Override
-    public void process(UserRequest request) {
-        Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.password())
-        );
+	@Override
+	public void process(UserRequest request) {
+		Authentication authenticate = authenticationManager
+			.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
-        if (!authenticate.isAuthenticated()) {
-            throw new BadCredentialsException("Invalid credentials");
-        }
-    }
+		if (!authenticate.isAuthenticated()) {
+			throw new BadCredentialsException("Invalid credentials");
+		}
+	}
+
 }

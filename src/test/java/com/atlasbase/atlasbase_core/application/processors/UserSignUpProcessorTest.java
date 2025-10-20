@@ -19,46 +19,45 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserSignUpProcessorTest {
 
-    @InjectMocks
-    private UserSignUpProcessor processor;
+	@InjectMocks
+	private UserSignUpProcessor processor;
 
-    @Mock
-    private UserRepository repository;
+	@Mock
+	private UserRepository repository;
 
-    @Test
-    void givenUserIsNotPresent_whenProcessed_shouldSaveUser() {
-        UserRequest userRequest = TestFixtures.userRequestMock();
+	@Test
+	void givenUserIsNotPresent_whenProcessed_shouldSaveUser() {
+		UserRequest userRequest = TestFixtures.userRequestMock();
 
-        processor.process(userRequest);
+		processor.process(userRequest);
 
-        verify(repository).save(any(User.class));
-    }
+		verify(repository).save(any(User.class));
+	}
 
-    @Test
-    void givenUserEmailIsExisting_whenProcessed_throwException() {
-        UserRequest userRequest = TestFixtures.userRequestMock();
+	@Test
+	void givenUserEmailIsExisting_whenProcessed_throwException() {
+		UserRequest userRequest = TestFixtures.userRequestMock();
 
-        when(repository.findByEmail(any(String.class)))
-                .thenThrow(new UserEmailExistsException("User email already " +
-                        "exists"));
+		when(repository.findByEmail(any(String.class)))
+			.thenThrow(new UserEmailExistsException("User email already " + "exists"));
 
-        assertThrows(UserEmailExistsException.class, () -> {
-            processor.process(userRequest);
-            verifyNoInteractions(repository);
-        });
-    }
+		assertThrows(UserEmailExistsException.class, () -> {
+			processor.process(userRequest);
+			verifyNoInteractions(repository);
+		});
+	}
 
-    @Test
-    void givenUserNameIsExisting_whenProcessed_throwException() {
-        UserRequest userRequest = TestFixtures.userRequestMock();
+	@Test
+	void givenUserNameIsExisting_whenProcessed_throwException() {
+		UserRequest userRequest = TestFixtures.userRequestMock();
 
-        when(repository.findByUserName(any(String.class)))
-                .thenThrow(new UserNameExistsException("UserName already " +
-                        "exists"));
+		when(repository.findByUserName(any(String.class)))
+			.thenThrow(new UserNameExistsException("UserName already " + "exists"));
 
-        assertThrows(UserNameExistsException.class, () -> {
-            processor.process(userRequest);
-            verifyNoInteractions(repository);
-        });
-    }
+		assertThrows(UserNameExistsException.class, () -> {
+			processor.process(userRequest);
+			verifyNoInteractions(repository);
+		});
+	}
+
 }

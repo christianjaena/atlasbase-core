@@ -1,6 +1,5 @@
 package com.atlasbase.atlasbase_core.application.processors;
 
-import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
 import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
 import com.atlasbase.atlasbase_core.application.interfaces.Processor;
 import com.atlasbase.atlasbase_core.core.model.User;
@@ -11,22 +10,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserSignUpProcessor implements Processor<UserRequest> {
 
-    private final UserRepository repository;
+	private final UserRepository repository;
 
-    public UserSignUpProcessor(UserRepository repository) {
-        this.repository = repository;
-    }
+	public UserSignUpProcessor(UserRepository repository) {
+		this.repository = repository;
+	}
 
-    @Override
-    public void process(UserRequest type) {
-        User userEntity = new User();
+	@Override
+	public void process(UserRequest type) {
+		User userEntity = new User();
+		repository.save(userEntity);
+	}
 
-        // TODO: Refactor to Validator
-
-        repository.findByUserName(type.userName()).ifPresent(user -> {
-            throw new UserNameExistsException("UserName already exists");
-        });
-
-        repository.save(userEntity);
-    }
 }

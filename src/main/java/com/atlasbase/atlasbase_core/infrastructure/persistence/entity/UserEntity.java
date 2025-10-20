@@ -15,14 +15,20 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserEntity {
 
-    @Id
-    private UUID id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String userName;
-    private String password;
+	@Id
+	private UUID id;
 
-    @Embedded
-    private Metadata metadata;
+	private String firstName;
+
+	private String lastName;
+
+	private String email;
+
+	private String userName;
+
+	private String password;
+
+	@Embedded
+	private Metadata metadata;
+
 }

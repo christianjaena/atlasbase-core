@@ -14,55 +14,53 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestPropertySource(properties = {
-        "spring.liquibase.enabled=false",
-        "spring.jpa.hibernate.ddl-auto=create-drop"
-})
+@TestPropertySource(properties = { "spring.liquibase.enabled=false", "spring.jpa.hibernate.ddl-auto=create-drop" })
 class UserJpaRepositoryTest {
 
-    @Autowired
-    private UserJpaRepository repository;
+	@Autowired
+	private UserJpaRepository repository;
 
-    @BeforeEach
-    void setup() {
-        repository.deleteAll();
+	@BeforeEach
+	void setup() {
+		repository.deleteAll();
 
-        UserEntity user = UserEntity.builder()
-                .id(UUID.randomUUID())
-                .userName("johndoe")
-                .email("johndoe@gmail.com")
-                .build();
+		UserEntity user = UserEntity.builder()
+			.id(UUID.randomUUID())
+			.userName("johndoe")
+			.email("johndoe@gmail.com")
+			.build();
 
-        repository.save(user);
-    }
+		repository.save(user);
+	}
 
-    @Test
-    void givenExistingUser_whenFindByUsername_shouldReturnUserEntity() {
-        Optional<UserEntity> user = repository.findByUserName("johndoe");
+	@Test
+	void givenExistingUser_whenFindByUsername_shouldReturnUserEntity() {
+		Optional<UserEntity> user = repository.findByUserName("johndoe");
 
-        assertTrue(user.isPresent());
-        assertEquals("johndoe", user.get().getUserName());
-    }
+		assertTrue(user.isPresent());
+		assertEquals("johndoe", user.get().getUserName());
+	}
 
-    @Test
-    void givenNonExistingUser_whenFindByUsername_shouldReturnOptionalEmpty() {
-        Optional<UserEntity> user = repository.findByUserName("non-existing-users");
+	@Test
+	void givenNonExistingUser_whenFindByUsername_shouldReturnOptionalEmpty() {
+		Optional<UserEntity> user = repository.findByUserName("non-existing-users");
 
-        assertTrue(user.isEmpty());
-    }
+		assertTrue(user.isEmpty());
+	}
 
-    @Test
-    void givenExistingUser_whenFindByEmail_shouldReturnUserEntity() {
-        Optional<UserEntity> user = repository.findByEmail("johndoe@gmail.com");
+	@Test
+	void givenExistingUser_whenFindByEmail_shouldReturnUserEntity() {
+		Optional<UserEntity> user = repository.findByEmail("johndoe@gmail.com");
 
-        assertTrue(user.isPresent());
-        assertEquals("johndoe@gmail.com", user.get().getEmail());
-    }
+		assertTrue(user.isPresent());
+		assertEquals("johndoe@gmail.com", user.get().getEmail());
+	}
 
-    @Test
-    void givenNonExistingUser_whenFindByEmail_shouldReturnOptionalEmpty() {
-        Optional<UserEntity> user = repository.findByEmail("non-existing-email@gmail.com");
+	@Test
+	void givenNonExistingUser_whenFindByEmail_shouldReturnOptionalEmpty() {
+		Optional<UserEntity> user = repository.findByEmail("non-existing-email@gmail.com");
 
-        assertTrue(user.isEmpty());
-    }
+		assertTrue(user.isEmpty());
+	}
+
 }

@@ -13,54 +13,50 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestFixtures {
 
-    public static String USER_CONTROLLER_BASE_PATH = "/v1/users";
+	public static String USER_CONTROLLER_BASE_PATH = "/v1/users";
 
-    public static String jsonContent = """
-            {"email": "user@example.com", "password": "password"}
-            """;
+	public static String jsonContent = """
+			{"email": "user@example.com", "password": "password"}
+			""";
 
-    public static User userMock() {
-        Metadata metadata = new Metadata();
-        metadata.setCreateDate(Instant.now());
-        metadata.setUpdateDate(Instant.now());
-        metadata.setCreatedBy("TEST");
-        metadata.setUpdatedBy("TEST");
+	public static User userMock() {
+		Metadata metadata = new Metadata();
+		metadata.setCreateDate(Instant.now());
+		metadata.setUpdateDate(Instant.now());
+		metadata.setCreatedBy("TEST");
+		metadata.setUpdatedBy("TEST");
 
-        User user = new User();
-        user.setId(UUID.randomUUID());
-        user.setEmail("testuser@gmail.com");
-        user.setUserName("test-user");
-        user.setFirstName("Test");
-        user.setLastName("User");
-        user.setMetadata(metadata);
-        user.setPassword("password");
-        return user;
-    }
+		User user = new User();
+		user.setId(UUID.randomUUID());
+		user.setEmail("testuser@gmail.com");
+		user.setUserName("test-user");
+		user.setFirstName("Test");
+		user.setLastName("User");
+		user.setMetadata(metadata);
+		user.setPassword("password");
+		return user;
+	}
 
-    public static UserEntity userEntityMock() {
-        Metadata metadata = new Metadata();
-        metadata.setCreateDate(Instant.now());
-        metadata.setUpdateDate(Instant.now());
-        metadata.setCreatedBy("TEST");
-        metadata.setUpdatedBy("TEST");
+	public static UserEntity userEntityMock() {
+		Metadata metadata = new Metadata();
+		metadata.setCreateDate(Instant.now());
+		metadata.setUpdateDate(Instant.now());
+		metadata.setCreatedBy("TEST");
+		metadata.setUpdatedBy("TEST");
 
-        UserEntity user = new UserEntity();
-        user.setId(UUID.randomUUID());
-        user.setEmail("testuser@gmail.com");
-        user.setUserName("test-user");
-        user.setFirstName("Test");
-        user.setLastName("User");
-        user.setMetadata(metadata);
-        user.setPassword("password");
-        return user;
-    }
+		UserEntity user = new UserEntity();
+		user.setId(UUID.randomUUID());
+		user.setEmail("testuser@gmail.com");
+		user.setUserName("test-user");
+		user.setFirstName("Test");
+		user.setLastName("User");
+		user.setMetadata(metadata);
+		user.setPassword("password");
+		return user;
+	}
 
-    public static UserRequest userRequestMock() {
-        return new UserRequest(
-                "johndoe",
-                "johndoe@gmail.com",
-                "password"
-        );
-    }
+	public static UserRequest userRequestMock() {
+		return new UserRequest("johndoe", "johndoe@gmail.com", "password");
+	}
 
 }
