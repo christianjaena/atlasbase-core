@@ -34,7 +34,7 @@ class UserJpaRepositoryTest {
 	}
 
 	@Test
-	void givenExistingUser_whenFindByUsername_shouldReturnUserEntity() {
+	void givenExistingUser_whenFindByUsername_thenReturnUserEntity() {
 		Optional<UserEntity> user = repository.findByUserName("johndoe");
 
 		assertTrue(user.isPresent());
@@ -42,14 +42,14 @@ class UserJpaRepositoryTest {
 	}
 
 	@Test
-	void givenNonExistingUser_whenFindByUsername_shouldReturnOptionalEmpty() {
+	void givenNonExistingUser_whenFindByUsername_thenReturnOptionalEmpty() {
 		Optional<UserEntity> user = repository.findByUserName("non-existing-users");
 
 		assertTrue(user.isEmpty());
 	}
 
 	@Test
-	void givenExistingUser_whenFindByEmail_shouldReturnUserEntity() {
+	void givenExistingUser_whenFindByEmail_thenReturnUserEntity() {
 		Optional<UserEntity> user = repository.findByEmail("johndoe@gmail.com");
 
 		assertTrue(user.isPresent());
@@ -57,7 +57,7 @@ class UserJpaRepositoryTest {
 	}
 
 	@Test
-	void givenNonExistingUser_whenFindByEmail_shouldReturnOptionalEmpty() {
+	void givenNonExistingUser_whenFindByEmail_thenReturnOptionalEmpty() {
 		Optional<UserEntity> user = repository.findByEmail("non-existing-email@gmail.com");
 
 		assertTrue(user.isEmpty());

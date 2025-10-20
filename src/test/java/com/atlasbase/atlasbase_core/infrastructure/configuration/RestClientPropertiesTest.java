@@ -15,7 +15,7 @@ class RestClientPropertiesTest {
 	private RestClientProperties restClientProperties;
 
 	@Test
-	void shouldBindPropertiesFromYaml() {
+	void thenBindPropertiesFromYaml() {
 		RestClientProperties.Pool pool = restClientProperties.pool();
 		RestClientProperties.Timeout timeout = restClientProperties.timeout();
 

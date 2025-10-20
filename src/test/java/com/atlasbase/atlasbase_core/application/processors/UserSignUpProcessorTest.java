@@ -26,38 +26,12 @@ class UserSignUpProcessorTest {
 	private UserRepository repository;
 
 	@Test
-	void givenUserIsNotPresent_whenProcessed_shouldSaveUser() {
+	void givenUserIsNotPresent_whenProcessed_thenSaveUser() {
 		UserRequest userRequest = TestFixtures.userRequestMock();
 
 		processor.process(userRequest);
 
 		verify(repository).save(any(User.class));
-	}
-
-	@Test
-	void givenUserEmailIsExisting_whenProcessed_throwException() {
-		UserRequest userRequest = TestFixtures.userRequestMock();
-
-		when(repository.findByEmail(any(String.class)))
-			.thenThrow(new UserEmailExistsException("User email already " + "exists"));
-
-		assertThrows(UserEmailExistsException.class, () -> {
-			processor.process(userRequest);
-			verifyNoInteractions(repository);
-		});
-	}
-
-	@Test
-	void givenUserNameIsExisting_whenProcessed_throwException() {
-		UserRequest userRequest = TestFixtures.userRequestMock();
-
-		when(repository.findByUserName(any(String.class)))
-			.thenThrow(new UserNameExistsException("UserName already " + "exists"));
-
-		assertThrows(UserNameExistsException.class, () -> {
-			processor.process(userRequest);
-			verifyNoInteractions(repository);
-		});
 	}
 
 }

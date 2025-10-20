@@ -6,6 +6,7 @@ import com.atlasbase.atlasbase_core.application.constants.UserAction;
 import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
 import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
+import com.atlasbase.atlasbase_core.application.exceptions.ValidationException;
 import com.atlasbase.atlasbase_core.application.validators.UserValidator;
 import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
 import org.junit.jupiter.api.Nested;
@@ -42,11 +43,29 @@ class UserControllerTest {
 	@MockitoBean
 	private AuthenticationManager manager;
 
+    @Test
+    void givenMalformedUserRequest_whenValidated_thenReturnBadRequest() throws Exception {
+        doThrow(ValidationException.class).when(validator)
+                .validate(any(UserRequest.class));
+
+        mockMvc
+                .perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestFixtures.jsonContent))
+                .andExpect(status().isBadRequest());
+
+        mockMvc
+                .perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestFixtures.jsonContent))
+                .andExpect(status().isBadRequest());
+    }
+
 	@Nested
 	class SignIn {
 
 		@Test
-		void givenWrongCredentials_whenSignIn_shouldReturnInvalidCredentials() throws Exception {
+		void givenWrongCredentials_whenSignIn_thenReturnInvalidCredentials() throws Exception {
 			doThrow(new BadCredentialsException("Invalid credentials")).when(processManager)
 				.manage(any(UserRequest.class), any(UserAction.class));
 
@@ -59,7 +78,7 @@ class UserControllerTest {
 		}
 
 		@Test
-		void givenCorrectCredentialsAndIsAuthenticatedTrue_whenSignIn_shouldReturnAuthenticated() throws Exception {
+		void givenCorrectCredentialsAndIsAuthenticatedTrue_whenSignIn_thenReturnAuthenticated() throws Exception {
 			doNothing().when(processManager).manage(any(UserRequest.class), any(UserAction.class));
 
 			mockMvc
@@ -76,20 +95,18 @@ class UserControllerTest {
 	class SignUp {
 
 		@Test
-		void givenUserIsNotPresent_whenSignUp_shouldReturnCreated() throws Exception {
-
+		void givenUserIsNotPresent_whenSignUp_thenReturnCreated() throws Exception {
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(TestFixtures.jsonContent))
 				.andExpect(status().isCreated());
-
 		}
 
 		@Test
-		void givenUserNameIsPresent_whenSignUp_shouldReturnBadRequest() throws Exception {
-			doThrow(new UserNameExistsException("UserName already exists")).when(processManager)
-				.manage(any(UserRequest.class), any(UserAction.class));
+		void givenUserNameIsPresent_whenSignUp_thenReturnBadRequest() throws Exception {
+			doThrow(new UserNameExistsException("UserName already exists")).when(validator)
+				.validate(any(UserRequest.class));
 
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
@@ -100,9 +117,9 @@ class UserControllerTest {
 		}
 
 		@Test
-		void givenEmailIsPresent_whenSignUp_shouldReturnBadRequest() throws Exception {
-			doThrow(new UserEmailExistsException("Email already exists")).when(processManager)
-				.manage(any(UserRequest.class), any(UserAction.class));
+		void givenEmailIsPresent_whenSignUp_thenReturnBadRequest() throws Exception {
+			doThrow(new UserEmailExistsException("Email already exists")).when(validator)
+				.validate(any(UserRequest.class));
 
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
