@@ -56,7 +56,11 @@ public class TestFixtures {
     }
 
     public static UserRequest userRequestMock() {
-        return new UserRequest("johndoe", "johndoe@gmail.com", "password");
+        return new UserRequest(
+                "johndoe",
+                "johndoe@gmail.com",
+                "password"
+        );
     }
 
 }

@@ -6,6 +6,7 @@ import com.atlasbase.atlasbase_core.application.constants.UserAction;
 import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
 import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
+import com.atlasbase.atlasbase_core.application.validators.UserValidator;
 import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ class UserControllerTest {
 
     @MockitoBean
     private UserProcessManager processManager;
+
+    @MockitoBean
+    private UserValidator validator;
 
     @MockitoBean
     private AuthenticationManager manager;

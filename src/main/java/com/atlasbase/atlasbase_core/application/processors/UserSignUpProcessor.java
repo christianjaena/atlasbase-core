@@ -22,9 +22,6 @@ public class UserSignUpProcessor implements Processor<UserRequest> {
         User userEntity = new User();
 
         // TODO: Refactor to Validator
-        repository.findByEmail(type.email()).ifPresent(user -> {
-            throw new UserEmailExistsException("Email already exists");
-        });
 
         repository.findByUserName(type.userName()).ifPresent(user -> {
             throw new UserNameExistsException("UserName already exists");
