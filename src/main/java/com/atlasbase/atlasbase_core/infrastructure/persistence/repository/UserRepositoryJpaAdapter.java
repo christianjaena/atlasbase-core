@@ -27,7 +27,7 @@ public class UserRepositoryJpaAdapter implements UserRepository {
 	}
 
 	@Override
-	public void save(User user) { // TODO: Make this User so that Entity never
+	public void save(User user) {
 		repository.save(mapper.toEntity(user));
 	}
 

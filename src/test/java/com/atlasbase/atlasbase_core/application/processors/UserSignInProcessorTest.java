@@ -1,5 +1,6 @@
 package com.atlasbase.atlasbase_core.application.processors;
 
+import com.atlasbase.atlasbase_core.TestFixtures;
 import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ class UserSignInProcessorTest {
 
 	@BeforeEach
 	void setup() {
-		request = new UserRequest("johndoe", "johndoe@gmail.com", "password");
+		request = TestFixtures.userRequestMock();
 	}
 
 	@Test

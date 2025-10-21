@@ -55,8 +55,40 @@ public class TestFixtures {
 		return user;
 	}
 
+	public static UserEntity userEntityFromUserRequestMock(UserRequest request) {
+		Metadata metadata = new Metadata();
+		metadata.setCreateDate(Instant.now());
+		metadata.setUpdateDate(Instant.now());
+		metadata.setCreatedBy("SYSTEM");
+		metadata.setUpdatedBy("SYSTEM");
+
+		UserEntity user = new UserEntity();
+		user.setId(UUID.randomUUID());
+		user.setEmail(request.email());
+		user.setUserName(request.userName());
+		user.setFirstName(request.firstName());
+		user.setLastName(request.lastName());
+		user.setMetadata(metadata);
+		user.setPassword(request.password());
+		return user;
+	}
+
+	public static Metadata createMetadata() {
+		Metadata metadata = new Metadata();
+		metadata.setCreateDate(Instant.now());
+		metadata.setCreatedBy("SYSTEM");
+		return metadata;
+	}
+
+	public static Metadata updateMetadata() {
+		Metadata metadata = new Metadata();
+		metadata.setUpdateDate(Instant.now());
+		metadata.setUpdatedBy("SYSTEM");
+		return metadata;
+	}
+
 	public static UserRequest userRequestMock() {
-		return new UserRequest("johndoe", "johndoe@gmail.com", "password");
+		return new UserRequest("johndoe", "John", "Doe", "johndoe@gmail.com", "password");
 	}
 
 }

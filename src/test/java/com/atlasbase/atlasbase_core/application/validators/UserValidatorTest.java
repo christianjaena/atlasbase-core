@@ -1,10 +1,12 @@
 package com.atlasbase.atlasbase_core.application.validators;
 
+import com.atlasbase.atlasbase_core.TestFixtures;
 import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
 import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
 import com.atlasbase.atlasbase_core.application.exceptions.UserRequestMalformedException;
 import com.atlasbase.atlasbase_core.core.port.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,10 +26,15 @@ class UserValidatorTest {
 	@Mock
 	private UserRepository repository;
 
+	private UserRequest userRequest;
+
+	@BeforeEach
+	void setup() {
+		userRequest = TestFixtures.userRequestMock();
+	}
+
 	@Test
 	void whenEmailIsExisting_whenValidate_thenThrowException() {
-		UserRequest userRequest = new UserRequest(null, "email@gmail.com", "password");
-
 		when(repository.findByEmail(userRequest.email()))
 			.thenThrow(new UserEmailExistsException("Email already " + "exists"));
 
@@ -38,8 +45,6 @@ class UserValidatorTest {
 
 	@Test
 	void whenUserNameIsExisting_whenValidate_thenThrowException() {
-		UserRequest userRequest = new UserRequest("johndoe", null, "password");
-
 		when(repository.findByUserName(userRequest.userName()))
 			.thenThrow(new UserNameExistsException("UserName already " + "exists"));
 
@@ -50,8 +55,6 @@ class UserValidatorTest {
 
 	@Test
 	void whenUserNameAndEmailIsNonExisting_whenValidate_thenDoNothing() {
-		UserRequest userRequest = new UserRequest("johndoe", "email@gmail.com", "password");
-
 		validator.validate(userRequest);
 
 		verify(repository).findByUserName(any(String.class));
@@ -60,7 +63,7 @@ class UserValidatorTest {
 
 	@Test
 	void whenUserNameAndEmailIsNull_whenValidate_thenThrowException() {
-		UserRequest userRequest = new UserRequest(null, null, null);
+		UserRequest userRequest = new UserRequest(null, null, null, null, null);
 
 		assertThrows(UserRequestMalformedException.class, () -> validator.validate(userRequest));
 
@@ -69,7 +72,7 @@ class UserValidatorTest {
 
 	@Test
 	void whenPasswordIsNull_whenValidate_thenThrowException() {
-		UserRequest userRequest = new UserRequest("johndoe", "email@gmail.com", null);
+		UserRequest userRequest = new UserRequest("johndoe", "John", "Doe", "email@gmail.com", null);
 
 		assertThrows(UserRequestMalformedException.class, () -> validator.validate(userRequest));
 

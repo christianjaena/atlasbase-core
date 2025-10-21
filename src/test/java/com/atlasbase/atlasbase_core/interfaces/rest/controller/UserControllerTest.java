@@ -43,23 +43,20 @@ class UserControllerTest {
 	@MockitoBean
 	private AuthenticationManager manager;
 
-    @Test
-    void givenMalformedUserRequest_whenValidated_thenReturnBadRequest() throws Exception {
-        doThrow(ValidationException.class).when(validator)
-                .validate(any(UserRequest.class));
+	@Test
+	void givenMalformedUserRequest_whenValidated_thenReturnBadRequest() throws Exception {
+		doThrow(ValidationException.class).when(validator).validate(any(UserRequest.class));
 
-        mockMvc
-                .perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(TestFixtures.jsonContent))
-                .andExpect(status().isBadRequest());
+		mockMvc
+			.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in").contentType(MediaType.APPLICATION_JSON)
+				.content(TestFixtures.jsonContent))
+			.andExpect(status().isBadRequest());
 
-        mockMvc
-                .perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(TestFixtures.jsonContent))
-                .andExpect(status().isBadRequest());
-    }
+		mockMvc
+			.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up").contentType(MediaType.APPLICATION_JSON)
+				.content(TestFixtures.jsonContent))
+			.andExpect(status().isBadRequest());
+	}
 
 	@Nested
 	class SignIn {
