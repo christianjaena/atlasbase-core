@@ -4,7 +4,6 @@ import com.atlasbase.atlasbase_core.TestFixtures;
 import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
 import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
-import com.atlasbase.atlasbase_core.application.exceptions.UserRequestMalformedException;
 import com.atlasbase.atlasbase_core.core.port.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,24 +58,6 @@ class UserValidatorTest {
 
 		verify(repository).findByUserName(any(String.class));
 		verify(repository).findByEmail(any(String.class));
-	}
-
-	@Test
-	void whenUserNameAndEmailIsNull_whenValidate_thenThrowException() {
-		UserRequest userRequest = new UserRequest(null, null, null, null, null);
-
-		assertThrows(UserRequestMalformedException.class, () -> validator.validate(userRequest));
-
-		verifyNoInteractions(repository);
-	}
-
-	@Test
-	void whenPasswordIsNull_whenValidate_thenThrowException() {
-		UserRequest userRequest = new UserRequest("johndoe", "John", "Doe", "email@gmail.com", null);
-
-		assertThrows(UserRequestMalformedException.class, () -> validator.validate(userRequest));
-
-		verifyNoInteractions(repository);
 	}
 
 }

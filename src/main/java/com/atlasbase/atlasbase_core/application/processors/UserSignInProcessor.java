@@ -20,7 +20,7 @@ public class UserSignInProcessor implements Processor<UserRequest> {
 	@Override
 	public void process(UserRequest request) {
 		Authentication authenticate = authenticationManager
-			.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+			.authenticate(new UsernamePasswordAuthenticationToken(request.userName(), request.password()));
 
 		if (!authenticate.isAuthenticated()) {
 			throw new BadCredentialsException("Invalid credentials");

@@ -1,4 +1,4 @@
-package com.atlasbase.atlasbase_core.application.service;
+package com.atlasbase.atlasbase_core.application.services;
 
 import com.atlasbase.atlasbase_core.core.model.User;
 import com.atlasbase.atlasbase_core.core.port.UserRepository;

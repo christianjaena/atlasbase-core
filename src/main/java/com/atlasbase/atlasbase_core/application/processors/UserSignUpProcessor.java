@@ -1,5 +1,6 @@
 package com.atlasbase.atlasbase_core.application.processors;
 
+import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
 import com.atlasbase.atlasbase_core.application.factory.UserFactory;
 import com.atlasbase.atlasbase_core.application.interfaces.Processor;
 import com.atlasbase.atlasbase_core.core.port.UserRepository;
@@ -26,6 +27,7 @@ public class UserSignUpProcessor implements Processor<UserRequest> {
 	@Override
 	public void process(UserRequest request) {
 		UserEntity userEntity = factory.createUserEntity(request);
+
 		repository.save(mapper.toDomain(userEntity));
 	}
 

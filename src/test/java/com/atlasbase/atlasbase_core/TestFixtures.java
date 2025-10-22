@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestFixtures {
 
-	public static String USER_CONTROLLER_BASE_PATH = "/v1/users";
+	public static String USER_CONTROLLER_BASE_PATH = "/api/v1/users";
 
 	public static String jsonContent = """
 			{"email": "user@example.com", "password": "password"}

@@ -1,4 +1,4 @@
-package com.atlasbase.atlasbase_core.application;
+package com.atlasbase.atlasbase_core.application.managers;
 
 import com.atlasbase.atlasbase_core.application.constants.UserAction;
 import com.atlasbase.atlasbase_core.application.interfaces.ProcessManager;

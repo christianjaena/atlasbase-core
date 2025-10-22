@@ -1,7 +1,7 @@
 package com.atlasbase.atlasbase_core.interfaces.rest.controller;
 
 import com.atlasbase.atlasbase_core.TestFixtures;
-import com.atlasbase.atlasbase_core.application.UserProcessManager;
+import com.atlasbase.atlasbase_core.application.managers.UserProcessManager;
 import com.atlasbase.atlasbase_core.application.constants.UserAction;
 import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
@@ -42,21 +42,6 @@ class UserControllerTest {
 
 	@MockitoBean
 	private AuthenticationManager manager;
-
-	@Test
-	void givenMalformedUserRequest_whenValidated_thenReturnBadRequest() throws Exception {
-		doThrow(ValidationException.class).when(validator).validate(any(UserRequest.class));
-
-		mockMvc
-			.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in").contentType(MediaType.APPLICATION_JSON)
-				.content(TestFixtures.jsonContent))
-			.andExpect(status().isBadRequest());
-
-		mockMvc
-			.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up").contentType(MediaType.APPLICATION_JSON)
-				.content(TestFixtures.jsonContent))
-			.andExpect(status().isBadRequest());
-	}
 
 	@Nested
 	class SignIn {

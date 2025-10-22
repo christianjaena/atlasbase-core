@@ -1,6 +1,6 @@
 package com.atlasbase.atlasbase_core.infrastructure.configuration;
 
-import com.atlasbase.atlasbase_core.application.service.CustomUserDetailsService;
+import com.atlasbase.atlasbase_core.application.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +19,7 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests(auth -> auth.requestMatchers("/v1/users/**")
+			.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/users/**")
 				.permitAll()
 				.requestMatchers("/actuator/**")
 				.permitAll()

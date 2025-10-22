@@ -16,7 +16,7 @@ public class GlobalWebExceptionHandler {
 	}
 
 	@ExceptionHandler(ValidationException.class)
-	public ResponseEntity<String> handleGenericException(ValidationException e) {
+	public ResponseEntity<String> handleValidationException(ValidationException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	}
 
