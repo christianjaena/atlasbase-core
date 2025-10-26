@@ -1,7 +1,9 @@
 package com.atlasbase.atlasbase_core.application.factory;
 
 import com.atlasbase.atlasbase_core.TestFixtures;
-import com.atlasbase.atlasbase_core.application.dto.UserRequest;
+import com.atlasbase.atlasbase_core.application.commands.BaseCommand;
+import com.atlasbase.atlasbase_core.application.commands.UserSignUpCommand;
+import com.atlasbase.atlasbase_core.application.dto.UserRequestDto;
 import com.atlasbase.atlasbase_core.core.model.Metadata;
 import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
 import org.junit.jupiter.api.Test;
@@ -29,15 +31,15 @@ class UserFactoryTest {
 	private PasswordEncoder passwordEncoder;
 
 	@Test
-	void givenUserRequest_whenCreate_thenReturnUserEntity() {
-		UserRequest request = new UserRequest("johndoe", "John", "Doe", "johndoe@gmail.com", "password");
-		UserEntity entityMock = TestFixtures.userEntityFromUserRequestMock(request);
+	void givenUserSignUpCommand_whenCreate_thenReturnUserEntity() {
+		UserSignUpCommand command = new UserSignUpCommand("johndoe", "password", "johndoe@gmail.com", "John", "Doe");
+		UserEntity entityMock = TestFixtures.userEntityFromUserSignUpCommand(command);
 
 		Metadata metadata = TestFixtures.createMetadata();
 		when(metadataFactory.create()).thenReturn(metadata);
 		when(passwordEncoder.encode(any(String.class))).thenReturn("password");
 
-		UserEntity entity = factory.createUserEntity(request);
+		UserEntity entity = factory.createUserEntity(command);
 
 		assertNotNull(entity);
 		assertNotNull(entity.getId());

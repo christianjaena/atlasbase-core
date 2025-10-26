@@ -1,7 +1,7 @@
 package com.atlasbase.atlasbase_core.application.processors;
 
+import com.atlasbase.atlasbase_core.application.commands.UserSignInCommand;
 import com.atlasbase.atlasbase_core.application.interfaces.Processor;
-import com.atlasbase.atlasbase_core.application.dto.UserRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserSignInProcessor implements Processor<UserRequest> {
+public class UserSignInProcessor implements Processor<UserSignInCommand> {
 
 	private final AuthenticationManager authenticationManager;
 
@@ -18,9 +18,9 @@ public class UserSignInProcessor implements Processor<UserRequest> {
 	}
 
 	@Override
-	public void process(UserRequest request) {
+	public void process(UserSignInCommand command) {
 		Authentication authenticate = authenticationManager
-			.authenticate(new UsernamePasswordAuthenticationToken(request.userName(), request.password()));
+			.authenticate(new UsernamePasswordAuthenticationToken(command.getUserName(), command.getPassword()));
 
 		if (!authenticate.isAuthenticated()) {
 			throw new BadCredentialsException("Invalid credentials");

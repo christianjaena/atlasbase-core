@@ -1,7 +1,9 @@
 package com.atlasbase.atlasbase_core.application.processors;
 
 import com.atlasbase.atlasbase_core.TestFixtures;
-import com.atlasbase.atlasbase_core.application.dto.UserRequest;
+import com.atlasbase.atlasbase_core.application.commands.BaseCommand;
+import com.atlasbase.atlasbase_core.application.commands.UserSignInCommand;
+import com.atlasbase.atlasbase_core.application.commands.UserSignUpCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,25 +28,25 @@ class UserSignInProcessorTest {
 	@Mock
 	private AuthenticationManager manager;
 
-	private UserRequest request;
+	private UserSignInCommand command;
 
 	@BeforeEach
 	void setup() {
-		request = TestFixtures.userRequestMock();
+		command = TestFixtures.userSignInCommandMock();
 	}
 
 	@Test
 	void givenUserIsFound_whenProcessed_thenDoNothing() {
 		isAuthenticated(true);
 
-		processor.process(request);
+		processor.process(command);
 	}
 
 	@Test
 	void givenUserIsNotFound_whenProcessed_thenThrowBadCredentialsException() {
 		isAuthenticated(false);
 
-		assertThrows(BadCredentialsException.class, () -> processor.process(request));
+		assertThrows(BadCredentialsException.class, () -> processor.process(command));
 	}
 
 	private void isAuthenticated(boolean isAuthenticated) {

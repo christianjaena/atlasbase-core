@@ -1,6 +1,8 @@
 package com.atlasbase.atlasbase_core;
 
-import com.atlasbase.atlasbase_core.application.dto.UserRequest;
+import com.atlasbase.atlasbase_core.application.commands.UserSignInCommand;
+import com.atlasbase.atlasbase_core.application.commands.UserSignUpCommand;
+import com.atlasbase.atlasbase_core.application.dto.UserRequestDto;
 import com.atlasbase.atlasbase_core.core.model.Metadata;
 import com.atlasbase.atlasbase_core.core.model.User;
 import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
@@ -55,7 +57,7 @@ public class TestFixtures {
 		return user;
 	}
 
-	public static UserEntity userEntityFromUserRequestMock(UserRequest request) {
+	public static UserEntity userEntityFromUserSignUpCommand(UserSignUpCommand command) {
 		Metadata metadata = new Metadata();
 		metadata.setCreateDate(Instant.now());
 		metadata.setUpdateDate(Instant.now());
@@ -64,12 +66,12 @@ public class TestFixtures {
 
 		UserEntity user = new UserEntity();
 		user.setId(UUID.randomUUID());
-		user.setEmail(request.email());
-		user.setUserName(request.userName());
-		user.setFirstName(request.firstName());
-		user.setLastName(request.lastName());
+		user.setEmail(command.getEmail());
+		user.setUserName(command.getUserName());
+		user.setFirstName(command.getFirstName());
+		user.setLastName(command.getLastName());
 		user.setMetadata(metadata);
-		user.setPassword(request.password());
+		user.setPassword(command.getPassword());
 		return user;
 	}
 
@@ -87,8 +89,16 @@ public class TestFixtures {
 		return metadata;
 	}
 
-	public static UserRequest userRequestMock() {
-		return new UserRequest("johndoe", "John", "Doe", "johndoe@gmail.com", "password");
+	public static UserRequestDto userRequestMock() {
+		return new UserRequestDto("johndoe", "John", "Doe", "johndoe@gmail.com", "password");
+	}
+
+	public static UserSignUpCommand userSignUpCommandMock() {
+		return new UserSignUpCommand("johndoe", "John", "Doe", "johndoe@gmail.com", "password");
+	}
+
+	public static UserSignInCommand userSignInCommandMock() {
+		return new UserSignInCommand("johndoe", "password");
 	}
 
 }

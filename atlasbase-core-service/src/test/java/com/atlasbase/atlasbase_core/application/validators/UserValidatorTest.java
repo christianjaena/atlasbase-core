@@ -1,7 +1,7 @@
 package com.atlasbase.atlasbase_core.application.validators;
 
 import com.atlasbase.atlasbase_core.TestFixtures;
-import com.atlasbase.atlasbase_core.application.dto.UserRequest;
+import com.atlasbase.atlasbase_core.application.dto.UserRequestDto;
 import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
 import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
 import com.atlasbase.atlasbase_core.core.port.UserRepository;
@@ -25,36 +25,36 @@ class UserValidatorTest {
 	@Mock
 	private UserRepository repository;
 
-	private UserRequest userRequest;
+	private UserRequestDto userRequestDto;
 
 	@BeforeEach
 	void setup() {
-		userRequest = TestFixtures.userRequestMock();
+		userRequestDto = TestFixtures.userRequestMock();
 	}
 
 	@Test
 	void whenEmailIsExisting_whenValidate_thenThrowException() {
-		when(repository.findByEmail(userRequest.email()))
+		when(repository.findByEmail(userRequestDto.email()))
 			.thenThrow(new UserEmailExistsException("Email already " + "exists"));
 
-		assertThrows(UserEmailExistsException.class, () -> validator.validate(userRequest));
+		assertThrows(UserEmailExistsException.class, () -> validator.validate(userRequestDto));
 
 		verify(repository).findByEmail(any(String.class));
 	}
 
 	@Test
 	void whenUserNameIsExisting_whenValidate_thenThrowException() {
-		when(repository.findByUserName(userRequest.userName()))
+		when(repository.findByUserName(userRequestDto.userName()))
 			.thenThrow(new UserNameExistsException("UserName already " + "exists"));
 
-		assertThrows(UserNameExistsException.class, () -> validator.validate(userRequest));
+		assertThrows(UserNameExistsException.class, () -> validator.validate(userRequestDto));
 
 		verify(repository).findByUserName(any(String.class));
 	}
 
 	@Test
 	void whenUserNameAndEmailIsNonExisting_whenValidate_thenDoNothing() {
-		validator.validate(userRequest);
+		validator.validate(userRequestDto);
 
 		verify(repository).findByUserName(any(String.class));
 		verify(repository).findByEmail(any(String.class));

@@ -1,7 +1,8 @@
 package com.atlasbase.atlasbase_core.application.processors;
 
 import com.atlasbase.atlasbase_core.TestFixtures;
-import com.atlasbase.atlasbase_core.application.dto.UserRequest;
+import com.atlasbase.atlasbase_core.application.commands.UserSignUpCommand;
+import com.atlasbase.atlasbase_core.application.dto.UserRequestDto;
 import com.atlasbase.atlasbase_core.application.factory.UserFactory;
 import com.atlasbase.atlasbase_core.core.model.User;
 import com.atlasbase.atlasbase_core.core.port.UserRepository;
@@ -33,14 +34,14 @@ class UserSignUpProcessorTest {
 
 	@Test
 	void givenUserIsNotPresent_whenProcessed_thenSaveUser() {
-		UserRequest userRequest = TestFixtures.userRequestMock();
+		UserSignUpCommand command = TestFixtures.userSignUpCommandMock();
 		User user = TestFixtures.userMock();
 		UserEntity userEntity = TestFixtures.userEntityMock();
 
-		when(factory.createUserEntity(any(UserRequest.class))).thenReturn(userEntity);
+		when(factory.createUserEntity(any(UserSignUpCommand.class))).thenReturn(userEntity);
 		when(mapper.toDomain(any(UserEntity.class))).thenReturn(user);
 
-		processor.process(userRequest);
+		processor.process(command);
 
 		verify(repository).save(user);
 	}

@@ -1,7 +1,9 @@
 package com.atlasbase.atlasbase_core.application.interfaces;
 
-public interface Processor<T> {
+import com.atlasbase.atlasbase_core.application.commands.BaseCommand;
 
-	void process(T type);
+public interface Processor<C extends BaseCommand> {
+
+	void process(C command);
 
 }

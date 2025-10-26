@@ -1,7 +1,7 @@
 package com.atlasbase.atlasbase_core.application.interfaces;
 
-public interface ProcessManager<T, E> {
+public interface ProcessManager<C, A> {
 
-	void manage(T type, E action);
+	void manage(C command, A action);
 
 }

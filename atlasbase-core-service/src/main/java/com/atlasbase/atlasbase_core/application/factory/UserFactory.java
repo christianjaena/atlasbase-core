@@ -1,6 +1,7 @@
 package com.atlasbase.atlasbase_core.application.factory;
 
-import com.atlasbase.atlasbase_core.application.dto.UserRequest;
+import com.atlasbase.atlasbase_core.application.commands.UserSignUpCommand;
+import com.atlasbase.atlasbase_core.application.dto.UserRequestDto;
 import com.atlasbase.atlasbase_core.infrastructure.persistence.entity.UserEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -19,14 +20,14 @@ public class UserFactory {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public UserEntity createUserEntity(UserRequest request) {
+	public UserEntity createUserEntity(UserSignUpCommand command) {
 		return UserEntity.builder()
 			.id(UUID.randomUUID())
-			.userName(request.userName())
-			.email(request.email())
-			.firstName(request.firstName())
-			.lastName(request.lastName())
-			.password(passwordEncoder.encode(request.password()))
+			.userName(command.getUserName())
+			.email(command.getEmail())
+			.firstName(command.getFirstName())
+			.lastName(command.getLastName())
+			.password(passwordEncoder.encode(command.getPassword()))
 			.metadata(metadataFactory.create())
 			.build();
 	}
