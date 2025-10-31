@@ -20,9 +20,9 @@ public class RestClientConfiguration {
 
 	private final RestClientProperties restClientProperties;
 
-    public RestClientConfiguration(RestClientProperties restClientProperties) {
-        this.restClientProperties = restClientProperties;
-    }
+	public RestClientConfiguration(RestClientProperties restClientProperties) {
+		this.restClientProperties = restClientProperties;
+	}
 
 	@Bean
 	public RestClient restClient() {
