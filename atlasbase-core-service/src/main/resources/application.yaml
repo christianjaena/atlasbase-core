@@ -31,14 +31,22 @@ management:
     prometheus:
       enabled: true
 
-rest-client:
-  pool:
-    max-total: 150
-    default-max-per-route: 50
-  timeout:
-    connect-timeout: 2s
-    response-timeout: 3s
-    connection-request-timeout: 1s
+app:
+  jwt:
+    secret: ${JWT_SECRET:secret}
+    issuer: altasbase
+    expiration: 900000 # 15 minutes in ms
+    refresh-expiration: 604800000 # 7 days in ms
+    token-prefix: "Bearer "
+
+  rest-client:
+    pool:
+      max-total: 150
+      default-max-per-route: 50
+    timeout:
+      connect-timeout: 2s
+      response-timeout: 3s
+      connection-request-timeout: 1s
 
 
 
