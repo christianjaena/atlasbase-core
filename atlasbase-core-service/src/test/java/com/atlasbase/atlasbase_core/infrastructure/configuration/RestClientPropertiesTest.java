@@ -1,5 +1,6 @@
 package com.atlasbase.atlasbase_core.infrastructure.configuration;
 
+import com.atlasbase.atlasbase_core.infrastructure.properties.RestClientProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,6 +1,6 @@
 package com.atlasbase.atlasbase_core.infrastructure.configuration;
 
-import lombok.AllArgsConstructor;
+import com.atlasbase.atlasbase_core.infrastructure.properties.RestClientProperties;
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -16,10 +16,13 @@ import org.springframework.web.client.RestClient;
 
 @Configuration
 @EnableConfigurationProperties(RestClientProperties.class)
-@AllArgsConstructor
 public class RestClientConfiguration {
 
-	private RestClientProperties restClientProperties;
+	private final RestClientProperties restClientProperties;
+
+    public RestClientConfiguration(RestClientProperties restClientProperties) {
+        this.restClientProperties = restClientProperties;
+    }
 
 	@Bean
 	public RestClient restClient() {
