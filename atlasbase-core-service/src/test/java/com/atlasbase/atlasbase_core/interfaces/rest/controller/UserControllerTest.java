@@ -9,9 +9,11 @@ import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsExcept
 import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
 import com.atlasbase.atlasbase_core.application.validators.UserValidator;
 import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
+import com.atlasbase.atlasbase_core.infrastructure.security.JwtAuthFilter;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -29,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserController.class)
 @Import(SecurityConfiguration.class)
+@AutoConfigureMockMvc(addFilters = false)
 class UserControllerTest {
 
 	@Autowired
@@ -43,6 +46,9 @@ class UserControllerTest {
 	@MockitoBean
 	private AuthenticationManager manager;
 
+	@MockitoBean
+	private JwtAuthFilter jwtAuthFilter;
+
 	@Nested
 	class SignIn {
 
@@ -54,7 +60,7 @@ class UserControllerTest {
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestFixtures.jsonContent))
+					.content(TestFixtures.signInJsonContent))
 				.andExpect(status().isUnauthorized())
 				.andExpect(content().string("Invalid credentials"));
 		}
@@ -66,7 +72,7 @@ class UserControllerTest {
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestFixtures.jsonContent))
+					.content(TestFixtures.signInJsonContent))
 				.andExpect(status().isOk())
 				.andExpect(content().string("Authenticated"));
 		}
@@ -81,7 +87,7 @@ class UserControllerTest {
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestFixtures.jsonContent))
+					.content(TestFixtures.signUpJsonContent))
 				.andExpect(status().isCreated());
 		}
 
@@ -93,7 +99,7 @@ class UserControllerTest {
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestFixtures.jsonContent))
+					.content(TestFixtures.signUpJsonContent))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().string("UserName already exists"));
 		}
@@ -106,7 +112,7 @@ class UserControllerTest {
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestFixtures.jsonContent))
+					.content(TestFixtures.signUpJsonContent))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().string("Email already exists"));
 		}

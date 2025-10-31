@@ -17,8 +17,21 @@ public class TestFixtures {
 
 	public static String USER_CONTROLLER_BASE_PATH = "/api/v1/users";
 
-	public static String jsonContent = """
-			{"email": "user@example.com", "password": "password"}
+	public static String signUpJsonContent = """
+			{
+			    "userName": "testuser",
+			    "email": "user@example.com",
+			    "password": "password",
+			    "firstName": "Test",
+			    "lastName": "User"
+			}
+			""";
+
+	public static String signInJsonContent = """
+			{
+			    "userName": "testuser",
+			    "password": "password"
+			}
 			""";
 
 	public static User userMock() {
