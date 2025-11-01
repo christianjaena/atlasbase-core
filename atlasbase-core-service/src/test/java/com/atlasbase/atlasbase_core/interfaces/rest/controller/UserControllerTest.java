@@ -7,9 +7,9 @@ import com.atlasbase.atlasbase_core.application.constants.UserAction;
 import com.atlasbase.atlasbase_core.application.dto.UserRequestDto;
 import com.atlasbase.atlasbase_core.application.exceptions.UserEmailExistsException;
 import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsException;
+import com.atlasbase.atlasbase_core.application.services.JwtService;
 import com.atlasbase.atlasbase_core.application.validators.UserValidator;
 import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
-import com.atlasbase.atlasbase_core.infrastructure.security.JwtAuthFilter;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserController.class)
 @Import(SecurityConfiguration.class)
-@AutoConfigureMockMvc(addFilters = false)
 class UserControllerTest {
 
 	@Autowired
@@ -47,7 +47,10 @@ class UserControllerTest {
 	private AuthenticationManager manager;
 
 	@MockitoBean
-	private JwtAuthFilter jwtAuthFilter;
+	private JwtService jwtService;
+
+	@MockitoBean
+	private UserDetailsService userDetailsService;
 
 	@Nested
 	class SignIn {

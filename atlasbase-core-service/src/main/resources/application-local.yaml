@@ -17,3 +17,9 @@ spring:
       enabled: true
     livereload:
       enabled: true
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.web.FilterChainProxy: TRACE
+    org.springframework.security.web.authentication: DEBUG

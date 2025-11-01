@@ -15,3 +15,9 @@ spring:
       enabled: false
     livereload:
       enabled: false
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG

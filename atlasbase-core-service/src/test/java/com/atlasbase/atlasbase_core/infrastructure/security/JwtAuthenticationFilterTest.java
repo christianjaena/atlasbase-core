@@ -24,10 +24,10 @@ import java.io.StringWriter;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class JwtAuthFilterTest {
+class JwtAuthenticationFilterTest {
 
 	@InjectMocks
-	private JwtAuthFilter jwtAuthFilter;
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Mock
 	private JwtService jwtService;
@@ -68,7 +68,7 @@ class JwtAuthFilterTest {
 		when(request.getHeader("Authorization")).thenReturn("Invalid");
 		when(response.getWriter()).thenReturn(mock(PrintWriter.class));
 
-		jwtAuthFilter.doFilterInternal(request, response, filterChain);
+		jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
 		verifyErrorResponse(errorResponse);
 		verifyNoInteractions(jwtService);
@@ -83,7 +83,7 @@ class JwtAuthFilterTest {
 		when(response.getWriter()).thenReturn(mock(PrintWriter.class));
 		when(jwtService.extractUsername(any(String.class))).thenReturn(null);
 
-		jwtAuthFilter.doFilterInternal(request, response, filterChain);
+		jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
 		verify(jwtService).extractUsername(any(String.class));
 		verifyNoInteractions(userDetailsService);
@@ -101,7 +101,7 @@ class JwtAuthFilterTest {
 		when(response.getWriter()).thenReturn(mock(PrintWriter.class));
 		when(jwtService.extractUsername(any(String.class))).thenReturn("test");
 
-		jwtAuthFilter.doFilterInternal(request, response, filterChain);
+		jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
 		verifyErrorResponse(errorResponse);
 		verify(jwtService).extractUsername(any(String.class));
@@ -122,7 +122,7 @@ class JwtAuthFilterTest {
 		when(userDetailsService.loadUserByUsername(any(String.class))).thenReturn(userDetails);
 		when(jwtService.validateToken(any(String.class))).thenReturn(false);
 
-		jwtAuthFilter.doFilterInternal(request, response, filterChain);
+		jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
 		verifyErrorResponse(errorResponse);
 		verify(jwtService).extractUsername(any(String.class));
@@ -139,7 +139,7 @@ class JwtAuthFilterTest {
 		when(userDetailsService.loadUserByUsername(any(String.class))).thenReturn(userDetails);
 		when(jwtService.validateToken(any(String.class))).thenReturn(true);
 
-		jwtAuthFilter.doFilterInternal(request, response, filterChain);
+		jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
 		verify(jwtService).extractUsername(any(String.class));
 		verify(userDetailsService).loadUserByUsername(any(String.class));
