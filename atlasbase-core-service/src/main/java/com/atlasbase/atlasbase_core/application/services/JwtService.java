@@ -11,42 +11,42 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 
+// TODO: Add Unit tests
 @Service
 @EnableConfigurationProperties(JwtProperties.class)
 public class JwtService {
 
-	private final JwtProperties jwtProperties;
+    private final JwtProperties jwtProperties;
 
-	public JwtService(JwtProperties jwtProperties) {
-		this.jwtProperties = jwtProperties;
-	}
+    public JwtService(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
 
-	public String generateToken(String username) {
-		return Jwts.builder()
-			.setSubject(username)
-			.setIssuedAt(new Date())
-			.setIssuer(jwtProperties.issuer())
-			.setExpiration(new Date(System.currentTimeMillis() + jwtProperties.expiration()))
-			.signWith(getSigningKey(), SignatureAlgorithm.HS256)
-			.compact();
-	}
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setIssuer(jwtProperties.issuer())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.expiration()))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
 
-	public String extractUsername(String token) {
-		return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
-	}
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            throw new JwtException("JWT validation failed: " + e.getMessage());
+        }
+    }
 
-	private Key getSigningKey() {
-		return Keys.hmacShaKeyFor(jwtProperties.secret().getBytes());
-	}
+    public String extractUsername(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
+    }
 
-	public boolean validateToken(String token) {
-		try {
-			Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
-			return true;
-		}
-		catch (JwtException e) {
-			return false;
-		}
-	}
 
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(jwtProperties.secret().getBytes());
+    }
 }

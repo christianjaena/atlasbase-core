@@ -1,10 +1,14 @@
 package com.atlasbase.atlasbase_core.infrastructure.configuration;
 
 import com.atlasbase.atlasbase_core.application.services.CustomUserDetailsService;
+import com.atlasbase.atlasbase_core.infrastructure.properties.CorsProperties;
 import com.atlasbase.atlasbase_core.infrastructure.security.JwtAuthFilter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,11 +18,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
+// TODO: Add Unit tests
 @EnableWebSecurity
 @Configuration
+@EnableConfigurationProperties(CorsProperties.class)
 public class SecurityConfiguration {
 
+    private CorsProperties corsProperties;
 	private final JwtAuthFilter jwtAuthFilter;
 
 	public SecurityConfiguration(JwtAuthFilter jwtAuthFilter) {
@@ -28,6 +40,7 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/users/sign-in")
 				.permitAll()
@@ -57,4 +70,17 @@ public class SecurityConfiguration {
 		return new BCryptPasswordEncoder();
 	}
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(corsProperties.allowedOrigins());
+        config.setAllowedMethods(corsProperties.allowedMethods());
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(corsProperties.maxAge());
+
+        var source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
 }

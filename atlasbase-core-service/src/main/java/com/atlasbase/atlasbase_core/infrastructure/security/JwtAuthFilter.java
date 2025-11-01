@@ -1,6 +1,7 @@
 package com.atlasbase.atlasbase_core.infrastructure.security;
 
 import com.atlasbase.atlasbase_core.application.services.JwtService;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,44 +15,68 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+// TODO: Add Unit tests
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-	private final JwtService jwtService;
+    private final JwtService jwtService;
 
-	private final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-	public JwtAuthFilter(JwtService jwtService, UserDetailsService userDetailsService) {
-		this.jwtService = jwtService;
-		this.userDetailsService = userDetailsService;
-	}
+    public JwtAuthFilter(JwtService jwtService,
+                         UserDetailsService userDetailsService) {
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+    }
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		String authHeader = request.getHeader("Authorization");
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
+        try {
+            String token = extractJwtFromHeader(request);
+            String userName = extractUserName(token);
 
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			filterChain.doFilter(request, response);
-			return;
-		}
+            if (SecurityContextHolder.getContext().getAuthentication() != null) {
+                throw new JwtException("Existing Authentication");
+            }
 
-		String token = authHeader.substring(7);
-		String userName = jwtService.extractUsername(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 
-		if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+            if (jwtService.validateToken(token)) {
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails, null);
 
-			if (jwtService.validateToken(token)) {
-				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails, null);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+        } catch (JwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("""
+                   { "error": "Invalid token", "message": "%s" }
+                    """.formatted(e.getMessage()));
+            return;
+        }
 
-				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-			}
-		}
+        filterChain.doFilter(request, response);
+    }
 
-		filterChain.doFilter(request, response);
+    private String extractUserName(String token) {
+        String userName = jwtService.extractUsername(token);
+        if (userName == null) {
+            throw new JwtException("Failed to extract userName from token");
+        }
+        return userName;
+    }
 
-	}
+    private String extractJwtFromHeader(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
+            throw new JwtException("Invalid Bearer token");
+        }
+        return bearerToken.substring(7);
+    }
 
 }
