@@ -24,16 +24,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-// TODO: Add Unit tests
 @EnableWebSecurity
 @Configuration
 @EnableConfigurationProperties(CorsProperties.class)
 public class SecurityConfiguration {
 
-    private CorsProperties corsProperties;
+	private final CorsProperties corsProperties;
+
 	private final JwtAuthFilter jwtAuthFilter;
 
-	public SecurityConfiguration(JwtAuthFilter jwtAuthFilter) {
+	public SecurityConfiguration(CorsProperties corsProperties, JwtAuthFilter jwtAuthFilter) {
+		this.corsProperties = corsProperties;
 		this.jwtAuthFilter = jwtAuthFilter;
 	}
 
@@ -70,17 +71,18 @@ public class SecurityConfiguration {
 		return new BCryptPasswordEncoder();
 	}
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(corsProperties.allowedOrigins());
-        config.setAllowedMethods(corsProperties.allowedMethods());
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
-        config.setMaxAge(corsProperties.maxAge());
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOrigins(corsProperties.allowedOrigins());
+		config.setAllowedMethods(corsProperties.allowedMethods());
+		config.setAllowedHeaders(List.of("*"));
+		config.setAllowCredentials(true);
+		config.setMaxAge(corsProperties.maxAge());
 
-        var source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+		var source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		return source;
+	}
+
 }

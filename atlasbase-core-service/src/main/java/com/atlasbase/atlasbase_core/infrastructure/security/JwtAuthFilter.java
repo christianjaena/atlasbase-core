@@ -15,68 +15,65 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-// TODO: Add Unit tests
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+	private final JwtService jwtService;
 
-    private final UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
 
-    public JwtAuthFilter(JwtService jwtService,
-                         UserDetailsService userDetailsService) {
-        this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
-    }
+	public JwtAuthFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+		this.jwtService = jwtService;
+		this.userDetailsService = userDetailsService;
+	}
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
-        try {
-            String token = extractJwtFromHeader(request);
-            String userName = extractUserName(token);
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		try {
+			String token = extractJwtFromHeader(request);
+			String userName = extractUserName(token);
 
-            if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                throw new JwtException("Existing Authentication");
-            }
+			if (SecurityContextHolder.getContext().getAuthentication() != null) {
+				throw new JwtException("Authentication context is not null");
+			}
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+			UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 
-            if (jwtService.validateToken(token)) {
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, null);
+			if (!jwtService.validateToken(token)) {
+				throw new JwtException("Error validating token");
+			}
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					userDetails, null);
 
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
-        } catch (JwtException e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.getWriter().write("""
-                   { "error": "Invalid token", "message": "%s" }
-                    """.formatted(e.getMessage()));
-            return;
-        }
+			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+		}
+		catch (JwtException e) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setContentType("application/json");
+			response.getWriter().write("""
+					{ "error": "Invalid token", "message": "%s" }
+					 """.formatted(e.getMessage()));
+			return;
+		}
 
-        filterChain.doFilter(request, response);
-    }
+		filterChain.doFilter(request, response);
+	}
 
-    private String extractUserName(String token) {
-        String userName = jwtService.extractUsername(token);
-        if (userName == null) {
-            throw new JwtException("Failed to extract userName from token");
-        }
-        return userName;
-    }
+	private String extractUserName(String token) {
+		String userName = jwtService.extractUsername(token);
+		if (userName == null) {
+			throw new JwtException("Failed to extract username from token");
+		}
+		return userName;
+	}
 
-    private String extractJwtFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
-            throw new JwtException("Invalid Bearer token");
-        }
-        return bearerToken.substring(7);
-    }
+	private String extractJwtFromHeader(HttpServletRequest request) {
+		String bearerToken = request.getHeader("Authorization");
+		if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
+			throw new JwtException("Authorization header should contain 'Bearer'");
+		}
+		return bearerToken.substring(7);
+	}
 
 }
