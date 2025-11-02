@@ -10,10 +10,10 @@ import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsExcepti
 import com.atlasbase.atlasbase_core.application.services.JwtService;
 import com.atlasbase.atlasbase_core.application.validators.UserValidator;
 import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
+import com.atlasbase.atlasbase_core.infrastructure.properties.JwtProperties;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -24,11 +24,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
 @Import(SecurityConfiguration.class)
@@ -65,19 +64,21 @@ class UserControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(TestFixtures.signInJsonContent))
 				.andExpect(status().isUnauthorized())
-				.andExpect(content().string("Invalid credentials"));
+				.andExpect(jsonPath("$.error.message", is("Invalid credentials")));
 		}
 
 		@Test
 		void givenCorrectCredentialsAndIsAuthenticatedTrue_whenSignIn_thenReturnAuthenticated() throws Exception {
 			doNothing().when(processManager).manage(any(BaseCommand.class), any(UserAction.class));
+			when(jwtService.generateToken(anyString())).thenReturn("mocked-jwt-token");
 
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(TestFixtures.signInJsonContent))
 				.andExpect(status().isOk())
-				.andExpect(content().string("Authenticated"));
+				.andExpect(jsonPath("$.data.message", is("User Authenticated")))
+				.andExpect(jsonPath("$.data.token").exists());
 		}
 
 	}
@@ -87,16 +88,20 @@ class UserControllerTest {
 
 		@Test
 		void givenUserIsNotPresent_whenSignUp_thenReturnCreated() throws Exception {
+
+			when(jwtService.generateToken(anyString())).thenReturn("mocked-jwt-token");
 			mockMvc
 				.perform(post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-up")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(TestFixtures.signUpJsonContent))
-				.andExpect(status().isCreated());
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.data.message", is("User Created")))
+				.andExpect(jsonPath("$.data.token").exists());
 		}
 
 		@Test
 		void givenUserNameIsPresent_whenSignUp_thenReturnBadRequest() throws Exception {
-			doThrow(new UserNameExistsException("UserName already exists")).when(validator)
+			doThrow(new UserNameExistsException("Username already exists")).when(validator)
 				.validate(any(UserRequestDto.class));
 
 			mockMvc
@@ -104,7 +109,7 @@ class UserControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(TestFixtures.signUpJsonContent))
 				.andExpect(status().isBadRequest())
-				.andExpect(content().string("UserName already exists"));
+				.andExpect(jsonPath("$.error.message", is("Username already exists")));
 		}
 
 		@Test
@@ -117,7 +122,7 @@ class UserControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(TestFixtures.signUpJsonContent))
 				.andExpect(status().isBadRequest())
-				.andExpect(content().string("Email already exists"));
+				.andExpect(jsonPath("$.error.message", is("Email already exists")));
 		}
 
 	}

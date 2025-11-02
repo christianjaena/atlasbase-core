@@ -22,7 +22,7 @@ public class UserValidator implements Validator<UserRequestDto> {
 		});
 
 		repository.findByUserName(request.userName()).ifPresent(_ -> {
-			throw new UserEmailExistsException("UserName already exists");
+			throw new UserEmailExistsException("Username already exists");
 		});
 	}
 

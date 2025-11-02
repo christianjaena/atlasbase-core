@@ -45,7 +45,7 @@ app:
       - OPTIONS
     max-age: 3600
   jwt:
-    secret: ${JWT_SECRET:secret}
+    secret: ${JWT_SECRET:80949c483f94f84d0ada979485203341}
     issuer: atlasbase
     expiration: 900000 # 15 minutes in ms
     refresh-expiration: 604800000 # 7 days in ms

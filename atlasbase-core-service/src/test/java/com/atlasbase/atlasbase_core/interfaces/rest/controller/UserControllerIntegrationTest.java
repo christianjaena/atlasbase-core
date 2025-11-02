@@ -22,6 +22,7 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -82,7 +83,8 @@ class UserControllerIntegrationTest {
 			.post(TestFixtures.USER_CONTROLLER_BASE_PATH + "/sign-in")
 			.then()
 			.statusCode(200)
-			.body(equalTo("Authenticated"));
+			.body("data.message", equalTo("User Authenticated"))
+			.body("data.token", notNullValue());
 	}
 
 	@Test

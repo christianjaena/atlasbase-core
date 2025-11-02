@@ -45,7 +45,7 @@ class UserValidatorTest {
 	@Test
 	void whenUserNameIsExisting_whenValidate_thenThrowException() {
 		when(repository.findByUserName(userRequestDto.userName()))
-			.thenThrow(new UserNameExistsException("UserName already " + "exists"));
+			.thenThrow(new UserNameExistsException("Username already " + "exists"));
 
 		assertThrows(UserNameExistsException.class, () -> validator.validate(userRequestDto));
 
