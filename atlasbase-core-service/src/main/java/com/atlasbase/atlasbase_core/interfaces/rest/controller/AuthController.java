@@ -10,25 +10,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+// TODO: Unit tests & Integration tests
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
 	private final JwtService jwtService;
-    private final GoogleTokenVerifier googleTokenVerifier;
+
+	private final GoogleTokenVerifier googleTokenVerifier;
 
 	public AuthController(JwtService jwtService, GoogleTokenVerifier googleTokenVerifier) {
 		this.jwtService = jwtService;
-        this.googleTokenVerifier = googleTokenVerifier;
+		this.googleTokenVerifier = googleTokenVerifier;
 	}
 
 	@PostMapping("/google")
 	public ResponseEntity<?> googleOAuthLogin(@RequestBody Map<String, String> body) throws Exception {
-        String idTokenString = body.get("token");
-        var payload = googleTokenVerifier.verify(idTokenString);
+		String idTokenString = body.get("token");
+		var payload = googleTokenVerifier.verify(idTokenString);
 
-        String email = payload.getEmail();
-        String name = payload.get("name").toString();
+		String email = payload.getEmail();
+		String name = payload.get("name").toString();
 		var jsonResponse = Map.of("token", jwtService.generateToken("google"), "email", email, "name", name);
 		return ResponseEntity.ok().body(jsonResponse);
 	}

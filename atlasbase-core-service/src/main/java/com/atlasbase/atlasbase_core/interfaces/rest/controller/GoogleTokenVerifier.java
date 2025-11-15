@@ -10,27 +10,30 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
+// TODO: Unit tests & Integration tests
 @Component
 public class GoogleTokenVerifier {
 
 	@Value("${google.client-id}")
 	private String CLIENT_ID;
-    private final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
+
+	private final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
 	public GoogleIdToken.Payload verify(String token) throws Exception {
 		var transport = GoogleNetHttpTransport.newTrustedTransport();
 
-        var verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                .setAudience(Collections.singletonList(CLIENT_ID))
-                .build();
+		var verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+			.setAudience(Collections.singletonList(CLIENT_ID))
+			.build();
 
-        var idToken = verifier.verify(token);
+		var idToken = verifier.verify(token);
 
-        if (idToken != null) {
-            return idToken.getPayload();
-        } else {
-            throw new RuntimeException("Invalid Google ID Token");
-        }
+		if (idToken != null) {
+			return idToken.getPayload();
+		}
+		else {
+			throw new RuntimeException("Invalid Google ID Token");
+		}
 
 	}
 

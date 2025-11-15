@@ -89,7 +89,7 @@
             <version>${google-oauth-client-jetty.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.api-client</groupId>
+            <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-gson</artifactId>
             <version>${google-http-client-gson.version}</version>
         </dependency>
