@@ -15,6 +15,11 @@
         <spring-javaformat-maven-plugin.version>0.0.47
         </spring-javaformat-maven-plugin.version>
         <jwt.version>0.11.5</jwt.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <google-api-client.version>2.8.1</google-api-client.version>
+        <google-oauth-client-jetty.version>1.39.0</google-oauth-client-jetty.version>
+        <google-http-client-gson.version>2.0.2
+        </google-http-client-gson.version>
     </properties>
 
     <dependencies>
@@ -73,6 +78,22 @@
             <version>${jwt.version}</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>${google-api-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>${google-oauth-client-jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-http-client-gson</artifactId>
+            <version>${google-http-client-gson.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -114,7 +135,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <release>${java.version}</release>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>

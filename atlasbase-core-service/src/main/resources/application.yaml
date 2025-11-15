@@ -60,6 +60,9 @@ app:
       response-timeout: 3s
       connection-request-timeout: 1s
 
+google:
+  client-id: 1074439335992-aem366g2qbduc9rmsscu6h6bup49osq5.apps.googleusercontent.com
+
 
 
 
