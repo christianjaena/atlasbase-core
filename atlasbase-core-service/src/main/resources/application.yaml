@@ -16,6 +16,9 @@ spring:
         password: actuator
         roles: ACTUATOR
 
+  config:
+    import: optional:file:${user.dir}/.env.properties
+
 management:
   endpoints:
     web:
@@ -45,7 +48,7 @@ app:
       - OPTIONS
     max-age: 3600
   jwt:
-    secret: ${JWT_SECRET:80949c483f94f84d0ada979485203341}
+    secret: ${JWT_SECRET}
     issuer: atlasbase
     expiration: 900000 # 15 minutes in ms
     refresh-expiration: 604800000 # 7 days in ms
@@ -61,7 +64,11 @@ app:
       connection-request-timeout: 1s
 
 google:
-  client-id: 1074439335992-aem366g2qbduc9rmsscu6h6bup49osq5.apps.googleusercontent.com
+  client-id: ${GOOGLE_CLIENT_ID}
+
+stripe:
+  base-url: https://api.stripe.com
+  secret-key: ${STRIPE_SECRET_KEY} # Sandbox
 
 
 

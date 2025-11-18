@@ -40,7 +40,8 @@ public class SecurityConfiguration {
 	@Bean
 	@Order(1)
 	public SecurityFilterChain publicSecurityChain(HttpSecurity http) throws Exception {
-		http.securityMatcher("/api/v1/users/sign-in", "/api/v1/users/sign-up", "/api/v1/auth/**", "/actuator/**")
+		http.securityMatcher("/api/v1/users/sign-in", "/api/v1/users/sign-up", "/api/v1/auth/**", "/api/v1/stripe",
+				"/actuator/**")
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(Customizer.withDefaults())
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

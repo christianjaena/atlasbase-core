@@ -1,4 +1,4 @@
-package com.atlasbase.atlasbase_core.interfaces.rest.controller;
+package com.atlasbase.atlasbase_core.application.util;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;

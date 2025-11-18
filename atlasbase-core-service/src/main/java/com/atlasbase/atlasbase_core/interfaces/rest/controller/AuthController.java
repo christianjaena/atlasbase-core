@@ -1,7 +1,7 @@
 package com.atlasbase.atlasbase_core.interfaces.rest.controller;
 
 import com.atlasbase.atlasbase_core.application.services.JwtService;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.atlasbase.atlasbase_core.application.util.GoogleTokenVerifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
