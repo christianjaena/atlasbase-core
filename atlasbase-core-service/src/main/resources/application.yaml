@@ -1,21 +1,17 @@
 spring:
   application:
     name: altasbase-core
-
   devtools:
     restart:
       enabled: false
-
   output:
     ansi:
       enabled: ALWAYS
-
   security:
       user:
         name: actuator
         password: actuator
         roles: ACTUATOR
-
   config:
     import: optional:file:${user.dir}/.env.properties
 
@@ -25,7 +21,6 @@ management:
       exposure:
         include: health,metrics,prometheus
       base-path: /actuator
-
   endpoint:
     health:
       show-details: always # 'when_authorized' for prod

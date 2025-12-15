@@ -10,11 +10,10 @@ import com.atlasbase.atlasbase_core.application.exceptions.UserNameExistsExcepti
 import com.atlasbase.atlasbase_core.application.services.JwtService;
 import com.atlasbase.atlasbase_core.application.validators.UserValidator;
 import com.atlasbase.atlasbase_core.infrastructure.configuration.SecurityConfiguration;
-import com.atlasbase.atlasbase_core.infrastructure.properties.JwtProperties;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;

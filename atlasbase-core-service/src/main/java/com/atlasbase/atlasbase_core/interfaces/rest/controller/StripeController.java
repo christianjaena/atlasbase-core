@@ -25,7 +25,8 @@ public class StripeController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createCustomer(@RequestBody Map<String, UUID> request) throws StripeException {
+	public ResponseEntity<Map<String, String>> createCustomer(@RequestBody Map<String, UUID> request)
+			throws StripeException {
 		var customerParams = CustomerCreateParams.builder()
 			.setName("Christian")
 			.setEmail("jaenachristian@gmail.com")
@@ -33,7 +34,7 @@ public class StripeController {
 
 		Customer customer = stripeClient.v1().customers().create(customerParams);
 
-		return ResponseEntity.ok().body(customer.toJson());
+		return ResponseEntity.ok().body(Map.of("name", customer.getName(), "email", customer.getEmail()));
 	}
 
 }
