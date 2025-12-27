@@ -6,6 +6,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+      dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -14,9 +15,3 @@ spring:
       enabled: true
     livereload:
       enabled: true
-
-logging:
-  level:
-    org.springframework.security: DEBUG
-    org.springframework.security.web.FilterChainProxy: TRACE
-    org.springframework.security.web.authentication: DEBUG
