@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://localhost:5432/atlasbasedb
+    username: atlasbase_admin
+    password: atlasbase_admin
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -11,6 +11,7 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
+    contexts: local
   devtools:
     restart:
       enabled: true

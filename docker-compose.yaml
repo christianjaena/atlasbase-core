@@ -1,12 +1,12 @@
 services:
   db:
-    container_name: atlasbase-core-db
+    container_name: atlasbase-db
     image: postgres:latest
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=atlasbasedb
+      - POSTGRES_USER=atlasebase_admin
+      - POSTGRES_PASSWORD=atlasbase_admin
 
 

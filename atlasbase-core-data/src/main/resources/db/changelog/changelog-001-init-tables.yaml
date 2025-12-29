@@ -9,8 +9,8 @@ databaseChangeLog:
       id: 1.0.1
       rollback:
         sqlFile:
-          dbms: postgresql
+          dbms: atlasbasedb
           path: db/changelog/rollback/U1.0.1_initial_tables.sql
       sqlFile:
-        dbms: postgresql
+        dbms: atlasbasedb
         path: db/changelog/rollout/V1.0.1_initial_tables.sql

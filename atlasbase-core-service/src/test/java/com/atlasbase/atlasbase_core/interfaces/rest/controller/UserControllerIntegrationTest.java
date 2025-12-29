@@ -42,9 +42,9 @@ class UserControllerIntegrationTest {
 	@Container
 	@ServiceConnection
 	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
-		.withDatabaseName("postgres")
-		.withUsername("postgres")
-		.withPassword("postgres");
+		.withDatabaseName("atlasbasedb")
+		.withUsername("atlasbase_admin")
+		.withPassword("atlasbase_admin");
 
 	@Autowired
 	private UserRepository repository;
