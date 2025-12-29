@@ -3,6 +3,7 @@ spring:
     url: jdbc:postgresql://atlasbase-core-db.cb8ygw20sk5x.ap-southeast-2.rds.amazonaws.com:5432/postgres
     username: postgres
     password: postgres
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
