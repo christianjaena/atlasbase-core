@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   db:
     container_name: atlasbase-db
@@ -5,8 +7,12 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=atlasbasedb
-      - POSTGRES_USER=atlasebase_admin
-      - POSTGRES_PASSWORD=atlasbase_admin
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
 
 
