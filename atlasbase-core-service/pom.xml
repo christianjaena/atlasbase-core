@@ -152,6 +152,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>me.escoffier.loom</groupId>
+            <artifactId>loom-unit</artifactId>
+            <version>0.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
